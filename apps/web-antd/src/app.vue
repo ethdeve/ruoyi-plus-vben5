@@ -36,7 +36,7 @@ useUploadTip();
 
 <template>
   <ConfigProvider :locale="antdLocale" :theme="tokenTheme">
-    <App>
+    <App class="antialiased">
       <RouterView />
     </App>
   </ConfigProvider>
