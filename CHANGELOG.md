@@ -1,5 +1,10 @@
 # 1.4.2
 
+**FEATURES**
+
+- 流程表达式 follow后端更新
+- websocket功能(默认关闭)
+
 **REFACTOR**
 
 - Modal/Drawer中使用VxeTable tooltip需要设置更高的z-index 防止被遮挡
