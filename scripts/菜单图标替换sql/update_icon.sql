@@ -44,6 +44,7 @@ UPDATE sys_menu SET icon = 'material-symbols:cloud-done-outline-rounded' WHERE m
 UPDATE sys_menu SET icon = 'mdi:cc-outline' WHERE menu_id = 11633;
 UPDATE sys_menu SET icon = 'fluent-mdl2:leave-user' WHERE menu_id = 11638;
 UPDATE sys_menu SET icon = 'fluent:form-24-regular' WHERE menu_id = 11628;
+UPDATE sys_menu SET icon = 'material-symbols:regular-expression-rounded' WHERE menu_id = 11801;
 /* 从本地迁移菜单管理的跳转菜单 */
 UPDATE sys_menu SET icon = 'tabler:code' WHERE menu_id = 116;
 UPDATE sys_menu SET icon = 'eos-icons:role-binding-outlined' WHERE menu_id = 130;
