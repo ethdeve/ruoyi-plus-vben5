@@ -119,6 +119,7 @@ export const modalSchema: FormSchemaGetter = () => [
       optionType: 'button',
       buttonStyle: 'solid',
     },
+    defaultValue: 'CLASSICS',
     rules: 'selectRequired',
   },
   {

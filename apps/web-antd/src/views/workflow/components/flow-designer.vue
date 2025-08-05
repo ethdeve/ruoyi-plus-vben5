@@ -12,7 +12,7 @@ defineOptions({ name: 'FlowDesigner' });
 
 const route = useRoute();
 const definitionId = route.query.definitionId as string;
-const disabled = route.query.disabled === 'true';
+// const disabled = route.query.disabled === 'true';
 
 const { clientId } = useAppConfig(import.meta.env, import.meta.env.PROD);
 
@@ -21,7 +21,7 @@ const params = {
   Authorization: `Bearer ${accessStore.accessToken}`,
   id: definitionId,
   clientid: clientId,
-  onlyDesignShow: disabled,
+  onlyDesignShow: true,
 };
 
 /**
