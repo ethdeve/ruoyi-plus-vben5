@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { StartWorkFlowReqData } from '#/api/workflow/task/model';
 
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useVbenModal } from '@vben/common-ui';
+import { useTabs } from '@vben/hooks';
 
-import { Card } from 'ant-design-vue';
+import { Card, Spin } from 'ant-design-vue';
 import dayjs from 'dayjs';
 import { cloneDeep, omit } from 'lodash-es';
 
@@ -36,13 +37,18 @@ const [BasicForm, formApi] = useVbenForm({
   wrapperClass: 'grid-cols-2',
 });
 
+const loading = ref(false);
 onMounted(async () => {
   // 只读 获取信息赋值
   if (id) {
+    loading.value = true;
+
     const resp = await leaveInfo(id);
     await formApi.setValues(resp);
     const dateRange = [dayjs(resp.startDate), dayjs(resp.endDate)];
     await formApi.setFieldValue('dateRange', dateRange);
+
+    loading.value = false;
   }
 });
 
@@ -88,6 +94,7 @@ async function handleTempSave() {
  * 保存业务 & 发起流程
  */
 async function handleStartWorkFlow() {
+  loading.value = true;
   try {
     // 保存业务
     const leaveResp = await handleSaveOrUpdate();
@@ -113,25 +120,38 @@ async function handleStartWorkFlow() {
     applyModalApi.open();
   } catch (error) {
     console.error(error);
+  } finally {
+    loading.value = false;
   }
 }
 
-function handleComplete() {
+const { closeCurrentTab } = useTabs();
+
+/**
+ * 通用提交/取消回调
+ *
+ * 提交后点击取消 这时候已经变成草稿状态了
+ * 每次点击都会生成新记录 直接跳转回列表
+ */
+async function handleCompleteOrCancel() {
   formApi.resetForm();
+  await closeCurrentTab();
   router.push('/demo/leave');
 }
 </script>
 
 <template>
-  <Card>
-    <div id="leave-form">
-      <!-- 使用v-if会影响生命周期 -->
+  <Spin :spinning="loading">
+    <Card>
       <BasicForm />
       <div class="flex justify-end gap-2">
         <a-button @click="handleTempSave">暂存</a-button>
         <a-button type="primary" @click="handleStartWorkFlow">提交</a-button>
       </div>
-      <ApplyModal @complete="handleComplete" />
-    </div>
-  </Card>
+      <ApplyModal
+        @complete="handleCompleteOrCancel"
+        @cancel="handleCompleteOrCancel"
+      />
+    </Card>
+  </Spin>
 </template>
