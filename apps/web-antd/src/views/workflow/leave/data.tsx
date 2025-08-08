@@ -96,9 +96,7 @@ export const columns: VxeGridProps['columns'] = [
   },
 ];
 
-export const modalSchema: (isEdit: boolean) => VbenFormSchema[] = (
-  isEdit: boolean,
-) => [
+export const modalSchema: () => VbenFormSchema[] = () => [
   {
     label: '主键',
     fieldName: 'id',
@@ -120,7 +118,6 @@ export const modalSchema: (isEdit: boolean) => VbenFormSchema[] = (
     defaultValue: 'leave1',
     rules: 'selectRequired',
     dependencies: {
-      show: () => isEdit,
       triggerFields: [''],
     },
   },

@@ -21,7 +21,7 @@ export interface TaskInfo {
   permissionList?: any;
   userList?: any;
   formCustom: string;
-  formPath?: any;
+  formPath: string;
   flowCode: string;
   version: string;
   flowStatus: string;

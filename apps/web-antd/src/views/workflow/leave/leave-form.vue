@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import type { LeaveVO } from './api/model';
-
 import type { StartWorkFlowReqData } from '#/api/workflow/task/model';
 
-import { computed, onMounted, ref, useTemplateRef } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useVbenModal } from '@vben/common-ui';
@@ -18,18 +16,9 @@ import { startWorkFlow } from '#/api/workflow/task';
 import { applyModal } from '../components';
 import { leaveAdd, leaveInfo, leaveUpdate } from './api';
 import { modalSchema } from './data';
-import LeaveDescription from './leave-description.vue';
 
 const route = useRoute();
-const readonly = route.query?.readonly === 'true';
 const id = route.query?.id as string;
-
-/**
- * id存在&readonly时候
- */
-const showActionBtn = computed(() => {
-  return !readonly;
-});
 
 const [BasicForm, formApi] = useVbenForm({
   commonConfig: {
@@ -40,45 +29,20 @@ const [BasicForm, formApi] = useVbenForm({
     // 通用配置项 会影响到所有表单项
     componentProps: {
       class: 'w-full',
-      disabled: readonly,
     },
   },
-  schema: modalSchema(!readonly),
+  schema: modalSchema(),
   showDefaultActions: false,
   wrapperClass: 'grid-cols-2',
 });
 
-const leaveDescription = ref<LeaveVO>();
-const showDescription = computed(() => {
-  return readonly && leaveDescription.value;
-});
-const cardRef = useTemplateRef('cardRef');
 onMounted(async () => {
   // 只读 获取信息赋值
   if (id) {
     const resp = await leaveInfo(id);
-    leaveDescription.value = resp;
     await formApi.setValues(resp);
     const dateRange = [dayjs(resp.startDate), dayjs(resp.endDate)];
     await formApi.setFieldValue('dateRange', dateRange);
-
-    /**
-     * window.parent（最近的上一级父页面）
-     * 主要解决内嵌iframe卡顿的问题
-     */
-    if (readonly) {
-      // 渲染完毕才显示表单
-      window.parent.postMessage({ type: 'mounted' }, '*');
-      // 获取表单高度 内嵌时保持一致
-      setTimeout(() => {
-        const el = cardRef.value?.$el as HTMLDivElement;
-        // 获取高度
-        const height = el?.offsetHeight ?? 0;
-        if (height) {
-          window.parent.postMessage({ type: 'height', height }, '*');
-        }
-      });
-    }
   }
 });
 
@@ -156,22 +120,14 @@ function handleComplete() {
   formApi.resetForm();
   router.push('/demo/leave');
 }
-
-/**
- * 显示详情时 需要较小的padding
- */
-const cardSize = computed(() => {
-  return showDescription.value ? 'small' : 'default';
-});
 </script>
 
 <template>
-  <Card ref="cardRef" :size="cardSize">
+  <Card>
     <div id="leave-form">
       <!-- 使用v-if会影响生命周期 -->
-      <BasicForm v-show="!showDescription" />
-      <LeaveDescription v-if="showDescription" :data="leaveDescription!" />
-      <div v-if="showActionBtn" class="flex justify-end gap-2">
+      <BasicForm />
+      <div class="flex justify-end gap-2">
         <a-button @click="handleTempSave">暂存</a-button>
         <a-button type="primary" @click="handleStartWorkFlow">提交</a-button>
       </div>
@@ -179,14 +135,3 @@ const cardSize = computed(() => {
     </div>
   </Card>
 </template>
-
-<style lang="scss">
-html:has(#leave-form) {
-  /**
-  去除顶部进度条样式
-  */
-  #nprogress {
-    display: none;
-  }
-}
-</style>
