@@ -3,12 +3,7 @@ import type { LeaveVO } from '../leave/api/model';
 
 import { computed, onMounted, shallowRef } from 'vue';
 
-import {
-  Alert,
-  Descriptions,
-  DescriptionsItem,
-  Skeleton,
-} from 'ant-design-vue';
+import { Descriptions, DescriptionsItem, Skeleton } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { leaveInfo } from './api';
@@ -41,12 +36,6 @@ function formatDate(date: string) {
 
 <template>
   <div class="rounded-[6px] border p-2">
-    <Alert
-      class="mb-4"
-      type="success"
-      show-icon
-      message="新版已经重构为映射组件方式来显示详情 来替代原来的iframe方案 加载速度更快(该提示会在发版前去除)"
-    />
     <Descriptions v-if="data" :column="1" size="middle">
       <DescriptionsItem label="请假类型">
         {{ leaveType }}
