@@ -100,6 +100,7 @@ async function handleEdit(row: Required<LeaveForm>) {
 
 async function handleCompleteOrCancel() {
   leaveDrawerApi.close();
+  applyModalApi.close();
   tableApi.query();
 }
 
