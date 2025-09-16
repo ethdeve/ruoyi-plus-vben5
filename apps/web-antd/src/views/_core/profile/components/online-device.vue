@@ -10,7 +10,10 @@ import { forceLogout2, onlineDeviceList } from '#/api/monitor/online';
 import { columns } from '#/views/monitor/online/data';
 
 const gridOptions: VxeGridProps = {
-  columns,
+  // 个人中心不需要显示重复字段
+  columns: columns?.filter(
+    (item) => !['deptName', 'userName'].includes(item.field ?? ''),
+  ),
   keepSource: true,
   pagerConfig: {
     enabled: false,
