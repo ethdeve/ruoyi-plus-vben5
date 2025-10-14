@@ -58,6 +58,9 @@ const content = defineModel<string>('modelValue', {
 
 const editorRef = shallowRef<EditorType | null>(null);
 
+// 存储上传图片的 url -> ossId 映射，用于后续附加 data-oss-id
+const pendingImageMap = new Map<string, string>();
+
 const { isDark, locale } = usePreferences();
 const skinName = computed(() => {
   return isDark.value ? 'oxide-dark' : 'oxide';
@@ -151,16 +154,9 @@ const initOptions = computed((): InitOptions => {
           .then((response) => {
             const { url, ossId } = response as unknown as UploadResult;
             console.log('tinymce上传图片:', url);
+            // 将 url -> ossId 映射存储起来，等待图片插入后再附加
+            pendingImageMap.set(url, ossId);
             resolve(url);
-            // 放在宏队列才能获取
-            setTimeout(() => {
-              const imgDom = editorRef.value?.dom.select(`img[src="${url}"]`);
-              if (imgDom) {
-                editorRef.value?.dom.setAttrib(imgDom, 'data-oss-id', ossId);
-              } else {
-                console.warn('无法获取图片dom, 存储数据可能会出现问题');
-              }
-            });
           })
           .catch((error) => {
             console.error('tinymce上传图片失败:', error);
@@ -174,6 +170,24 @@ const initOptions = computed((): InitOptions => {
       editor.on('init', () => {
         emit('mounted');
         loading.value = false;
+      });
+
+      // 监听内容变化，处理待附加 data-oss-id 的图片
+      editor.on('NodeChange', () => {
+        if (pendingImageMap.size === 0) return;
+        pendingImageMap.forEach((ossId, url) => {
+          const imgDoms = editor.dom.select(`img[src="${url}"]`);
+          if (imgDoms && imgDoms.length > 0) {
+            imgDoms.forEach((imgDom) => {
+              // 只处理还没有 data-oss-id 属性的图片
+              if (!editor.dom.getAttrib(imgDom, 'data-oss-id')) {
+                editor.dom.setAttrib(imgDom, 'data-oss-id', ossId);
+                console.log('已附加 data-oss-id:', url, ossId);
+              }
+            });
+            pendingImageMap.delete(url);
+          }
+        });
       });
     },
   };
