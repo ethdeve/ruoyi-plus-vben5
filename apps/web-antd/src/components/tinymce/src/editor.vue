@@ -133,6 +133,11 @@ const initOptions = computed((): InitOptions => {
     toolbar_mode: 'sliding',
     // 隐藏下面的 按xxx获取帮助
     help_accessibility: false,
+    // https://blog.csdn.net/qq_46380656/article/details/122171418
+    // 避免图片地址和链接地址转换成相对路径
+    relative_urls: false,
+    remove_script_host: false,
+    convert_urls: false,
     ...options,
     /**
      * 覆盖默认的base64行为
