@@ -12,7 +12,7 @@ import {
   UsergroupAddOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue';
-import { Avatar, TimelineItem } from 'antdv-next';
+import { Avatar } from 'antdv-next';
 
 import { ossInfo } from '#/api/system/oss';
 import { renderDict } from '#/utils/render';
@@ -51,8 +51,8 @@ const isMultiplePerson = computed(
 </script>
 
 <template>
-  <TimelineItem>
-    <template #dot>
+  <div>
+    <template>
       <div class="relative rounded-full border">
         <Avatar
           class="bg-primary-400"
@@ -63,7 +63,7 @@ const isMultiplePerson = computed(
         <VbenAvatar
           v-else
           :alt="item?.approveName ?? 'unknown'"
-          class="bg-primary size-[36px] rounded-full text-white"
+          class="size-[36px] rounded-full bg-primary text-white"
           src=""
         />
         <div
@@ -86,12 +86,12 @@ const isMultiplePerson = computed(
       <div :class="cn('mt-2 flex flex-wrap gap-2')" v-if="isMultiplePerson">
         <!-- 如果昵称中带, 这里的处理是不准确的 -->
         <div
-          :class="cn('bg-foreground/5 flex items-center rounded-full', 'p-1')"
+          :class="cn('flex items-center rounded-full bg-foreground/5', 'p-1')"
           v-for="(name, index) in item.approveName.split(',')"
           :key="index"
         >
           <Avatar
-            class="bg-primary-400 flex items-center justify-center"
+            class="flex items-center justify-center bg-primary-400"
             :size="24"
             :icon="h(UserOutlined)"
           />
@@ -107,7 +107,7 @@ const isMultiplePerson = computed(
         :class="cn('flex gap-2')"
       >
         <MessageOutlined />
-        <div class="text-foreground/75 break-all">{{ item.message }}</div>
+        <div class="break-all text-foreground/75">{{ item.message }}</div>
       </div>
       <div v-if="attachmentInfo.length > 0" class="flex flex-wrap gap-2">
         <!-- 这里下载的文件名不是原始文件名 -->
@@ -125,5 +125,5 @@ const isMultiplePerson = computed(
         </a>
       </div>
     </div>
-  </TimelineItem>
+  </div>
 </template>

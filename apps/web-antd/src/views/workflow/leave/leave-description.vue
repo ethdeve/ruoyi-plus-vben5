@@ -1,9 +1,11 @@
-<script setup lang="ts">
+<script setup lang="tsx">
+import type { DescriptionsProps } from 'antdv-next';
+
 import type { LeaveVO } from '../leave/api/model';
 
 import { computed, onMounted, shallowRef } from 'vue';
 
-import { Descriptions, DescriptionsItem, Skeleton } from 'antdv-next';
+import { Descriptions, Skeleton } from 'antdv-next';
 import dayjs from 'dayjs';
 
 import { leaveInfo } from './api';
@@ -32,25 +34,37 @@ const leaveType = computed(() => {
 function formatDate(date: string) {
   return dayjs(date).format('YYYY-MM-DD');
 }
+
+const items = computed<DescriptionsProps['items']>(() => {
+  if (!data.value) {
+    return [];
+  }
+  const info = data.value;
+  return [
+    {
+      content: leaveType.value,
+      label: '请假类型',
+    },
+    {
+      content: `${formatDate(info.startDate)} - ${formatDate(info.endDate)}`,
+      label: '请假时间',
+    },
+    {
+      content: `${info.leaveDays}天`,
+      label: '请假时长',
+    },
+    {
+      content: info.remark || '无',
+      label: '请假原因',
+    },
+  ];
+});
 </script>
 
 <template>
   <div class="rounded-[6px] border p-2">
-    <Descriptions v-if="data" :column="1" size="middle">
-      <DescriptionsItem label="请假类型">
-        {{ leaveType }}
-      </DescriptionsItem>
-      <DescriptionsItem label="请假时间">
-        {{ formatDate(data.startDate) }} - {{ formatDate(data.endDate) }}
-      </DescriptionsItem>
-      <DescriptionsItem label="请假时长">
-        {{ data.leaveDays }}天
-      </DescriptionsItem>
-      <DescriptionsItem label="请假原因">
-        {{ data.remark || '无' }}
-      </DescriptionsItem>
-    </Descriptions>
+    <Descriptions v-if="data" :column="1" :items="items" size="middle" />
 
-    <Skeleton active v-else />
+    <Skeleton v-else active />
   </div>
 </template>

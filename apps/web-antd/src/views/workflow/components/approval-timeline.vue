@@ -1,5 +1,9 @@
-<script setup lang="ts">
+<script setup lang="tsx">
+import type { TimelineProps } from 'antdv-next';
+
 import type { Flow } from '#/api/workflow/instance/model';
+
+import { computed, h } from 'vue';
 
 import { Empty, Timeline } from 'antdv-next';
 
@@ -9,12 +13,18 @@ interface Props {
   list: Flow[];
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const items = computed<TimelineProps['items']>(() => {
+  const { list } = props;
+  return list.map((item) => ({
+    key: item.id,
+    content: h(ApprovalTimelineItem, { item }),
+  }));
+});
 </script>
 
 <template>
-  <Timeline v-if="list.length > 0">
-    <ApprovalTimelineItem v-for="item in list" :key="item.id" :item="item" />
-  </Timeline>
+  <Timeline v-if="list.length > 0" :items="items" />
   <Empty v-else />
 </template>

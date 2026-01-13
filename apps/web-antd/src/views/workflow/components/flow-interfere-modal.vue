@@ -1,4 +1,6 @@
-<script setup lang="ts">
+<script setup lang="tsx">
+import type { DescriptionsProps } from 'antdv-next';
+
 import type { User } from '#/api/system/user/model';
 import type { TaskInfo } from '#/api/workflow/task/model';
 
@@ -6,7 +8,7 @@ import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
-import { Descriptions, DescriptionsItem, Modal } from 'antdv-next';
+import { Descriptions, Modal } from 'antdv-next';
 
 import {
   getTaskByTaskId,
@@ -127,30 +129,50 @@ function handleReductionSignature(userList: User[]) {
     },
   });
 }
+
+const items = computed<DescriptionsProps['items']>(() => {
+  if (!taskInfo.value) {
+    return [];
+  }
+  const data = taskInfo.value;
+  return [
+    {
+      content: data.nodeName,
+      label: '任务名称',
+    },
+    {
+      content: data.nodeCode,
+      label: '节点编码',
+    },
+    {
+      content: data.createTime,
+      label: '开始时间',
+    },
+    {
+      content: data.instanceId,
+      label: '流程实例ID',
+    },
+    {
+      content: data.version,
+      label: '版本号',
+    },
+    {
+      content: data.businessId,
+      label: '业务ID',
+    },
+  ];
+});
 </script>
 
 <template>
   <BasicModal>
-    <Descriptions v-if="taskInfo" :column="2" bordered size="small">
-      <DescriptionsItem label="任务名称">
-        {{ taskInfo.nodeName }}
-      </DescriptionsItem>
-      <DescriptionsItem label="节点编码">
-        {{ taskInfo.nodeCode }}
-      </DescriptionsItem>
-      <DescriptionsItem label="开始时间">
-        {{ taskInfo.createTime }}
-      </DescriptionsItem>
-      <DescriptionsItem label="流程实例ID">
-        {{ taskInfo.instanceId }}
-      </DescriptionsItem>
-      <DescriptionsItem label="版本号">
-        {{ taskInfo.version }}
-      </DescriptionsItem>
-      <DescriptionsItem label="业务ID">
-        {{ taskInfo.businessId }}
-      </DescriptionsItem>
-    </Descriptions>
+    <Descriptions
+      v-if="taskInfo"
+      :column="2"
+      :items="items"
+      bordered
+      size="small"
+    />
     <TransferModal mode="single" @finish="handleTransfer" />
     <AddSignatureModal mode="multiple" @finish="handleAddSignature" />
     <ReductionSignatureModal
