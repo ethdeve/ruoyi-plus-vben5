@@ -54,6 +54,15 @@ export const overridesPreferences = defineOverridesPreferences({
      * 这里为6px 与antd保持一致
      */
     radius: '0.375',
+    // 这些颜色和antd默认颜色保持一致 即hex -> hsl
+    // 错误色
+    colorDestructive: 'hsl(359, 100%, 65%)',
+    // 主题色
+    colorPrimary: 'hsl(215, 100%, 54%)',
+    // 成功色
+    colorSuccess: 'hsl(100, 77%, 44%)',
+    // 警告色
+    colorWarning: 'hsl(40, 96%, 53%)',
   },
   /**
    * !!! 更改配置后请清空浏览器缓存

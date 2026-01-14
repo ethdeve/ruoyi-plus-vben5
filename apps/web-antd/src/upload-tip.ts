@@ -1,7 +1,6 @@
 import { onMounted } from 'vue';
 
 import { useLocalStorage } from '@vueuse/core';
-import { Modal } from 'antdv-next';
 
 export function useUploadTip() {
   const readTip = useLocalStorage<boolean>('__upload_tip_read_5.4.0', false);
@@ -9,7 +8,7 @@ export function useUploadTip() {
     if (readTip.value || !import.meta.env.DEV) {
       return;
     }
-    const modalInstance = Modal.info({
+    const modalInstance = window.modal.info({
       title: '提示',
       centered: true,
       content:
