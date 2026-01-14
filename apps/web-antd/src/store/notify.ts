@@ -5,6 +5,7 @@ import { computed, ref, watch } from 'vue';
 import { SvgMessageUrl } from '@vben/icons';
 import { $t } from '@vben/locales';
 import { useUserStore } from '@vben/stores';
+import { buildUUID } from '@vben/utils';
 
 import { Modal, notification } from 'antdv-next';
 import dayjs from 'dayjs';
@@ -55,7 +56,7 @@ export const useNotifyStore = defineStore(
         notification.success({
           description: message,
           duration: 3,
-          message: $t('component.notice.received'),
+          title: $t('component.notice.received'),
         });
 
         notificationList.value.unshift({
@@ -66,6 +67,7 @@ export const useNotifyStore = defineStore(
           message,
           title: $t('component.notice.title'),
           userId: userId.value,
+          id: buildUUID(),
         });
 
         // 需要手动置空 vue3在值相同时不会触发watch

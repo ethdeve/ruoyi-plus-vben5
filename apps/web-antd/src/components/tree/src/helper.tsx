@@ -155,7 +155,7 @@ function validateMenuTree(menu: MenuOption) {
         const description = `错误用法: [${menu.label} - 菜单]下不能放 目录/菜单 -> [${item.label}]`;
         console.warn(description);
         notification.warning({
-          message: '提示',
+          title: '提示',
           description,
           duration: 0,
         });
@@ -172,7 +172,7 @@ function validateMenuTree(menu: MenuOption) {
         const description = `错误用法: [${menu.label} - 按钮]下不能放置'目录/菜单/按钮' -> [${item.label}]`;
         console.warn(description);
         notification.warning({
-          message: '提示',
+          title: '提示',
           description,
           duration: 0,
         });

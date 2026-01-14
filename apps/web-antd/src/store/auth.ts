@@ -69,7 +69,17 @@ export const useAuthStore = defineStore('auth', () => {
         notification.success({
           description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
           duration: 3,
-          message: $t('authentication.loginSuccess'),
+          title: $t('authentication.loginSuccess'),
+        });
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        Array.from({ length: 5 }).forEach((_, index) => {
+          setTimeout(() => {
+            notification.success({
+              title: '新的notification样式',
+              description: '这是一条新的通知消息',
+            });
+          }, index * 900);
         });
       }
     } finally {

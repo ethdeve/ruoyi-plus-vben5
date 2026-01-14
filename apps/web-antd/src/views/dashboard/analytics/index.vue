@@ -14,6 +14,8 @@ import {
   SvgDownloadIcon,
 } from '@vben/icons';
 
+import { Alert } from 'antdv-next';
+
 import AnalyticsTrends from './analytics-trends.vue';
 import AnalyticsVisitsData from './analytics-visits-data.vue';
 import AnalyticsVisitsSales from './analytics-visits-sales.vue';
@@ -65,6 +67,13 @@ const chartTabs: TabOption[] = [
 
 <template>
   <div class="p-5">
+    <Alert
+      class="mb-5"
+      :show-icon="true"
+      type="success"
+      title="该分支使用antdv-next替代不维护的ant-design-vue"
+    />
+
     <AnalysisOverview :items="overviewItems" />
     <AnalysisChartsTabs :tabs="chartTabs" class="mt-5">
       <template #trends>
