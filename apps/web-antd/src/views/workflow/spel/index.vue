@@ -5,12 +5,11 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { Spel } from '#/api/workflow/spel/model';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
-import { getVxePopupContainer } from '@vben/utils';
 
 import { Modal, Popconfirm, Space } from 'antdv-next';
 
 import { useVbenVxeGrid, vxeCheckboxChecked } from '#/adapter/vxe-table';
-import { spelList,spelDelete } from '#/api/workflow/spel';
+import { spelDelete, spelList } from '#/api/workflow/spel';
 
 import { columns, querySchema } from './data';
 import spelDrawer from './spel-drawer.vue';
@@ -125,7 +124,6 @@ function handleMultiDelete() {
             {{ $t('pages.common.edit') }}
           </ghost-button>
           <Popconfirm
-            :get-popup-container="getVxePopupContainer"
             placement="left"
             title="确认删除？"
             @confirm="handleDelete(row)"

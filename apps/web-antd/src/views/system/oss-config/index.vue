@@ -6,7 +6,6 @@ import type { OssConfig } from '#/api/system/oss-config/model';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
-import { getVxePopupContainer } from '@vben/utils';
 
 import { Modal, Popconfirm, Space } from 'antdv-next';
 
@@ -145,7 +144,6 @@ const { hasAccessByCodes } = useAccess();
             {{ $t('pages.common.edit') }}
           </ghost-button>
           <Popconfirm
-            :get-popup-container="getVxePopupContainer"
             placement="left"
             title="确认删除？"
             @confirm="handleDelete(row)"

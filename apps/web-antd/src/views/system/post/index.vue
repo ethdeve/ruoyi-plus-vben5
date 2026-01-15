@@ -7,7 +7,6 @@ import type { Post } from '#/api/system/post/model';
 import { ref } from 'vue';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
-import { getVxePopupContainer } from '@vben/utils';
 
 import { Modal, Popconfirm, Space } from 'antdv-next';
 
@@ -169,7 +168,6 @@ function handleDownloadExcel() {
             {{ $t('pages.common.edit') }}
           </GhostButton>
           <Popconfirm
-            :get-popup-container="getVxePopupContainer"
             placement="left"
             title="确认删除？"
             @confirm="handleDelete(row)"

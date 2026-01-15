@@ -8,7 +8,6 @@ import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page, useVbenModal } from '@vben/common-ui';
-import { getVxePopupContainer } from '@vben/utils';
 
 import { Modal, Popconfirm, Space } from 'antdv-next';
 import dayjs from 'dayjs';
@@ -245,7 +244,6 @@ function handleImport() {
           {{ $t('pages.common.edit') }}
         </a-button>
         <Popconfirm
-          :get-popup-container="getVxePopupContainer"
           :title="`确认同步[${row.tableName}]?`"
           placement="left"
           @confirm="handleSync(row)"
@@ -268,7 +266,6 @@ function handleImport() {
           生成代码
         </a-button>
         <Popconfirm
-          :get-popup-container="getVxePopupContainer"
           :title="`确认删除[${row.tableName}]?`"
           placement="left"
           @confirm="handleDelete(row)"

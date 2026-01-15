@@ -13,7 +13,6 @@ import { useAppConfig } from '@vben/hooks';
 import { $t } from '@vben/locales';
 import { stringify } from '@vben/request';
 import { useAccessStore } from '@vben/stores';
-import { getVxePopupContainer } from '@vben/utils';
 
 import {
   Image,
@@ -295,7 +294,6 @@ const [FileUploadModal, fileUploadApi] = useVbenModal({
             {{ $t('pages.common.download') }}
           </ghost-button>
           <Popconfirm
-            :get-popup-container="getVxePopupContainer"
             placement="left"
             title="确认删除？"
             @confirm="handleDelete(row)"

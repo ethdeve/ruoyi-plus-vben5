@@ -15,7 +15,6 @@ import {
   SUPERADMIN_ROLE_ID,
   SUPERADMIN_ROLE_KEY,
 } from '@vben/constants';
-import { getVxePopupContainer } from '@vben/utils';
 
 import { Modal, Popconfirm, Space } from 'antdv-next';
 
@@ -221,7 +220,6 @@ async function handleChangeStatus(checked: boolean, row: Role) {
               分配
             </ghost-button>
             <Popconfirm
-              :get-popup-container="getVxePopupContainer"
               placement="left"
               title="确认删除？"
               @confirm="handleDelete(row)"

@@ -8,7 +8,6 @@ import { computed } from 'vue';
 
 import { useAccess } from '@vben/access';
 import { Fallback, Page, useVbenDrawer } from '@vben/common-ui';
-import { getVxePopupContainer } from '@vben/utils';
 
 import { Modal, Popconfirm, Space } from 'antdv-next';
 
@@ -217,7 +216,6 @@ function handleSyncTenantConfig() {
             {{ $t('pages.common.edit') }}
           </ghost-button>
           <Popconfirm
-            :get-popup-container="getVxePopupContainer"
             :title="`确认同步[${row.companyName}]的套餐吗?`"
             placement="left"
             @confirm="handleSync(row)"
@@ -231,7 +229,6 @@ function handleSyncTenantConfig() {
             </ghost-button>
           </Popconfirm>
           <Popconfirm
-            :get-popup-container="getVxePopupContainer"
             placement="left"
             title="确认删除？"
             @confirm="handleDelete(row)"

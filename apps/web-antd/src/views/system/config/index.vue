@@ -5,7 +5,6 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysConfig } from '#/api/system/config/model';
 
 import { Page, useVbenModal } from '@vben/common-ui';
-import { getVxePopupContainer } from '@vben/utils';
 
 import { Modal, Popconfirm, Space } from 'antdv-next';
 
@@ -156,7 +155,6 @@ async function handleRefreshCache() {
             {{ $t('pages.common.edit') }}
           </ghost-button>
           <Popconfirm
-            :get-popup-container="getVxePopupContainer"
             placement="left"
             title="确认删除？"
             @confirm="handleDelete(row)"

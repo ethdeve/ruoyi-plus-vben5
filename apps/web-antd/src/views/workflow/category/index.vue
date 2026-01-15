@@ -136,7 +136,7 @@ function collapseAll() {
             {{ $t('pages.common.add') }}
           </ghost-button>
           <Popconfirm
-            :get-popup-container="getVxePopupContainer"
+
             placement="left"
             title="确认删除？"
             @confirm="handleDelete(row)"

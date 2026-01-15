@@ -7,7 +7,6 @@ import type { User } from '#/api/system/user/model';
 import { useRoute } from 'vue-router';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
-import { getVxePopupContainer } from '@vben/utils';
 
 import { Modal, Popconfirm, Space } from 'antdv-next';
 
@@ -132,7 +131,6 @@ function handleMultipleAuthCancel() {
       </template>
       <template #action="{ row }">
         <Popconfirm
-          :get-popup-container="getVxePopupContainer"
           :title="`是否取消授权用户[${row.userName} - ${row.nickName}]?`"
           placement="left"
           @confirm="handleAuthCancel(row)"
