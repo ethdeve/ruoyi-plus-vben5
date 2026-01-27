@@ -121,7 +121,7 @@ const items = computed<DescriptionsProps['items']>(() => {
 <template>
   <BasicDrawer :footer="false" class="w-[600px]" title="查看日志">
     <Descriptions
-      :styles="{ label: { minWidth: '120px' } }"
+      :classes="{ label: 'min-w-[120px]' }"
       :column="1"
       :items="items"
       bordered

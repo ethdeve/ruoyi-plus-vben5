@@ -74,7 +74,7 @@ const items = computed<DescriptionsProps['items']>(() => {
     {
       label: '登录设备',
       content: (
-        <div class="flex items-center justify-center gap-[6px]">
+        <div class="flex items-center gap-[6px]">
           {renderOsIcon(data.os, 'shrink-0')}
           {os}
         </div>
@@ -83,7 +83,7 @@ const items = computed<DescriptionsProps['items']>(() => {
     {
       label: '浏览器',
       content: (
-        <div class="flex items-center justify-center gap-[6px]">
+        <div class="flex items-center gap-[6px]">
           {renderBrowserIcon(data.browser, 'shrink-0')}
           {data.browser}
         </div>
