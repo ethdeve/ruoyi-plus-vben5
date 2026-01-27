@@ -26,6 +26,7 @@ export const querySchema: FormSchemaGetter = () => [
     component: 'RangePicker',
     fieldName: 'createTime',
     label: '创建时间',
+    defaultValue: [null, null],
   },
 ];
 
