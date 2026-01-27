@@ -1,8 +1,9 @@
 <script setup lang="tsx">
 import type { DescriptionsProps } from 'antdv-next';
 
-import { computed, onBeforeUnmount } from 'vue';
+import { computed, onBeforeUnmount, ref } from 'vue';
 
+import { useTimeout } from '@vueuse/core';
 import { useRequest } from 'alova/client';
 import { Descriptions, Skeleton } from 'antdv-next';
 import dayjs from 'dayjs';
@@ -61,12 +62,20 @@ const items = computed<DescriptionsProps['items']>(() => {
     },
   ];
 });
+
+// 延时的骨架屏 防止接口请求过快 导致闪烁
+const showSkeleton = ref(false);
+useTimeout(300, {
+  callback: () => {
+    showSkeleton.value = true;
+  },
+});
 </script>
 
 <template>
   <div class="rounded-[6px] border p-2">
     <Descriptions v-if="data" :column="1" :items="items" size="middle" />
 
-    <Skeleton v-else active />
+    <Skeleton v-else-if="showSkeleton && !data" active />
   </div>
 </template>
