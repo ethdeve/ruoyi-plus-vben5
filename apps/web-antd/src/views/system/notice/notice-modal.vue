@@ -102,9 +102,11 @@ const [BasicModal, modalApi] = useVbenModal({
       const filterRecord = pick(record, Object.keys(defaultValues));
 
       // 你可以调用这个方法来显示私有桶的图片（每次获取最新）
-      // 如果你是公开桶 最好去掉这段代码 会造成不必要的查询
-      filterRecord.noticeContent =
-        (await contentWithOssIdTransform(record.noticeContent)) ?? '';
+      // 包含ossId 则需要转换
+      if (filterRecord.noticeContent?.includes('data-oss-id=')) {
+        filterRecord.noticeContent =
+          (await contentWithOssIdTransform(record.noticeContent)) ?? '';
+      }
 
       formData.value = filterRecord;
     }
