@@ -24,7 +24,7 @@ import {
   userStatusChange,
 } from '#/api/system/user';
 import ApiSwitch from '#/components/global/api-switch.vue';
-import { commonDownloadExcel } from '#/utils/file/download';
+import { useBlobExport } from '#/utils/file/export';
 
 import { columns, querySchema } from './data';
 import DeptTree from './dept-tree.vue';
@@ -156,10 +156,14 @@ function handleMultiDelete() {
   });
 }
 
-function handleDownloadExcel() {
-  commonDownloadExcel(userExport, '用户管理', tableApi.formApi.form.values, {
-    fieldMappingTime: formOptions.fieldMappingTime,
-  });
+const { exportBlob, exportLoading, buildExportFileName } =
+  useBlobExport(userExport);
+async function handleExport() {
+  // 构建表单请求参数
+  const formValues = await tableApi.formApi.getValues();
+  // 文件名
+  const fileName = buildExportFileName('用户信息');
+  exportBlob({ data: formValues, fileName });
 }
 
 const [UserInfoModal, userInfoModalApi] = useVbenModal({
@@ -202,7 +206,6 @@ function handleMenuClick(key: string, row: any) {
 }
 
 async function handleChangeStatus(checked: boolean, row: User) {
-  console.log(checked);
   await userStatusChange({
     userId: row.userId,
     status: checked ? EnableStatus.Enable : EnableStatus.Disable,
@@ -224,7 +227,9 @@ async function handleChangeStatus(checked: boolean, row: User) {
           <Space>
             <a-button
               v-access:code="['system:user:export']"
-              @click="handleDownloadExcel"
+              :loading="exportLoading"
+              :disabled="exportLoading"
+              @click="handleExport"
             >
               {{ $t('pages.common.export') }}
             </a-button>
