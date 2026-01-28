@@ -5,7 +5,7 @@ import type { DeptTree } from '#/api/system/user/model';
 
 import { computed, onMounted, ref } from 'vue';
 
-import { listToTree, treeToList } from '@vben/utils';
+import { cloneDeep, listToTree, treeToList } from '@vben/utils';
 
 import { SyncOutlined } from '@antdv-next/icons';
 import { Empty, Input, Skeleton, SpaceCompact, Tree } from 'antdv-next';
@@ -72,10 +72,11 @@ const deptTreeComputed = computed(() => {
   if (!searchValue.value) {
     return deptTreeArray.value;
   }
-  const toTree = treeToList(deptTreeArray.value, {
+  const toTree: DeptTreeArray = treeToList(cloneDeep(deptTreeArray.value), {
     id: 'id',
     pid: 'parentId',
   });
+  toTree.forEach((i) => (i.children = []));
   const filteredTree = toTree.filter((item: DeptTree) =>
     item.label.toUpperCase().includes(searchValue.value.toUpperCase()),
   );
