@@ -17,6 +17,7 @@ import { computed, onUnmounted, ref, watch } from 'vue';
 
 import { $t } from '@vben/locales';
 
+import { Upload } from 'antdv-next';
 import { isFunction, isString } from 'lodash-es';
 
 import { ossInfo } from '#/api/system/oss';
@@ -267,7 +268,8 @@ export function useUpload(
     const isLtMax = file.size / 1024 / 1024 < props.maxSize!;
     if (!isLtMax) {
       window.message.error($t('component.upload.maxSize', [props.maxSize]));
-      return false;
+      // 防止被加入文件列表 可以通过返回 Upload.LIST_IGNORE 实现。
+      return Upload.LIST_IGNORE;
     }
     // 大坑 Safari不支持file-type库 去除文件类型的校验
     return file;
