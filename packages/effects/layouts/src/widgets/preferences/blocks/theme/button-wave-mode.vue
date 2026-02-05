@@ -15,13 +15,12 @@ type ButtonWaveModeItem = {
   label: ThemePreferences['buttonWaveMode'];
   value: ThemePreferences['buttonWaveMode'];
 };
-const items: ButtonWaveModeItem[] = [
-  { label: 'Default', value: 'Default' },
-  { label: 'Disabled', value: 'Disabled' },
-  { label: 'Happy', value: 'Happy' },
-  { label: 'Inset', value: 'Inset' },
-  { label: 'Shake', value: 'Shake' },
-];
+const items: ButtonWaveModeItem[] = (
+  ['Default', 'Disabled', 'Happy', 'Inset', 'Shake'] as const
+).map((item) => ({
+  label: item,
+  value: item,
+}));
 </script>
 
 <template>
