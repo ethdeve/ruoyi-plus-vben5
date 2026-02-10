@@ -1,41 +1,19 @@
-import type { RouteRecordStringComponent } from '@vben/types';
+import type { RouteRecordRaw } from 'vue-router';
 
-import { $t } from '@vben/locales';
+import { IFrameView } from '@vben/layouts';
+
+import { $t } from '#/locales';
 
 const {
   version,
   // vite inject-metadata 插件注入的全局变量
 } = __VBEN_ADMIN_METADATA__ || {};
 
-/**
- * 该文件放非后台返回的路由 比如个人中心 等需要跳转显示的页面
- * 也可以直接在菜单管理配置
- */
-const localRoutes: RouteRecordStringComponent[] = [
+const routes: RouteRecordRaw[] = [
   {
-    component: '/_core/profile/index',
-    meta: {
-      icon: 'mingcute:profile-line',
-      title: $t('ui.widgets.profile'),
-      hideInMenu: true,
-      requireHomeRedirect: true,
-    },
-    name: 'Profile',
-    path: '/profile',
-  },
-];
-
-/**
- * 这里放本地路由
- */
-export const localMenuList: RouteRecordStringComponent[] = [
-  {
-    component: 'BasicLayout',
     meta: {
       order: -1,
-      title: 'page.dashboard.title',
-      // 不使用基础布局（仅在顶级生效）
-      noBasicLayout: true,
+      title: $t('page.dashboard.title'),
     },
     name: 'Dashboard',
     path: '/',
@@ -44,24 +22,24 @@ export const localMenuList: RouteRecordStringComponent[] = [
       {
         name: 'Analytics',
         path: '/analytics',
-        component: '/dashboard/analytics/index',
+        component: () => import('#/views/dashboard/analytics/index.vue'),
         meta: {
           affixTab: true,
-          title: 'page.dashboard.analytics',
+          title: $t('page.dashboard.analytics'),
         },
       },
       {
         name: 'Workspace',
         path: '/workspace',
-        component: '/dashboard/workspace/index',
+        component: () => import('#/views/dashboard/workspace/index.vue'),
         meta: {
-          title: 'page.dashboard.workspace',
+          title: $t('page.dashboard.workspace'),
         },
       },
       {
         name: 'VbenDocument',
         path: '/vben-admin/document',
-        component: 'IFrameView',
+        component: IFrameView,
         meta: {
           icon: 'lucide:book-open-text',
           iframeSrc: 'https://dapdap.top',
@@ -72,7 +50,7 @@ export const localMenuList: RouteRecordStringComponent[] = [
       {
         name: 'V5UpdateLog',
         path: '/changelog',
-        component: '/演示使用自行删除/changelog/index',
+        component: () => import('#/views/演示使用自行删除/changelog/index.vue'),
         meta: {
           icon: 'lucide:book-open-text',
           keepAlive: true,
@@ -84,7 +62,7 @@ export const localMenuList: RouteRecordStringComponent[] = [
     ],
   },
   {
-    component: '/_core/about/index',
+    component: () => import('#/views/_core/about/index.vue'),
     meta: {
       icon: 'lucide:copyright',
       order: 9999,
@@ -93,5 +71,6 @@ export const localMenuList: RouteRecordStringComponent[] = [
     name: 'About',
     path: '/vben-admin/about',
   },
-  ...localRoutes,
 ];
+
+export default routes;

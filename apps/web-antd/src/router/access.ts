@@ -10,13 +10,9 @@ import type { Menu } from '#/api';
 import { generateAccessible } from '@vben/access';
 import { preferences } from '@vben/preferences';
 
-import { cloneDeep } from 'lodash-es';
-
 import { getAllMenusApi } from '#/api';
 import { BasicLayout, IFrameView } from '#/layouts';
 import { $t } from '#/locales';
-
-import { localMenuList } from './routes/local';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 const NotFoundComponent = () => import('#/views/_core/fallback/not-found.vue');
@@ -249,10 +245,7 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
       const backMenuList = await getAllMenusApi();
       // 转换为vben能用的路由
       const vbenMenuList = backMenuToVbenMenu(backMenuList);
-      // 特别注意 这里要深拷贝
-      const menuList = [...cloneDeep(localMenuList), ...vbenMenuList];
-      // console.log('menuList', menuList);
-      return menuList;
+      return vbenMenuList;
     },
     // 可以指定没有权限跳转403页面
     forbiddenComponent,
