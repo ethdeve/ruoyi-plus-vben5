@@ -6,7 +6,7 @@ import type { PageResult } from '#/api/common';
 #end
 
 import { commonExport } from '#/api/helper';
-import { requestClient } from '#/api/request';
+import { alovaInstance } from '#/utils/http';
 
 /**
 * 查询${functionName}列表
@@ -15,9 +15,9 @@ import { requestClient } from '#/api/request';
 */
 export function ${businessName}List(params?: ${BusinessName}Query) {
   #if($tplCategory != 'tree')
-  return requestClient.get<PageResult<${BusinessName}VO>>('/${moduleName}/${businessName}/list', { params });
+  return alovaInstance.get<PageResult<${BusinessName}VO>>('/${moduleName}/${businessName}/list', { params });
   #else
-  return requestClient.get<${BusinessName}VO[]>(`/${moduleName}/${businessName}/list`, { params });
+  return alovaInstance.get<${BusinessName}VO[]>(`/${moduleName}/${businessName}/list`, { params });
   #end
 }
 
@@ -38,7 +38,7 @@ export function ${businessName}Export(params?: ${BusinessName}Query) {
  * @returns ${functionName}详情
  */
 export function ${businessName}Info(${pkColumn.javaField}: ID) {
-  return requestClient.get<${BusinessName}VO>(`/${moduleName}/${businessName}/${${pkColumn.javaField}}`);
+  return alovaInstance.get<${BusinessName}VO>(`/${moduleName}/${businessName}/${${pkColumn.javaField}}`);
 }
 
 /**
@@ -47,7 +47,7 @@ export function ${businessName}Info(${pkColumn.javaField}: ID) {
  * @returns void
  */
 export function ${businessName}Add(data: ${BusinessName}Form) {
-  return requestClient.postWithMsg<void>('/${moduleName}/${businessName}', data);
+  return alovaInstance.postWithMsg<void>('/${moduleName}/${businessName}', data);
 }
 
 /**
@@ -56,7 +56,7 @@ export function ${businessName}Add(data: ${BusinessName}Form) {
  * @returns void
  */
 export function ${businessName}Update(data: ${BusinessName}Form) {
-  return requestClient.putWithMsg<void>('/${moduleName}/${businessName}', data);
+  return alovaInstance.putWithMsg<void>('/${moduleName}/${businessName}', data);
 }
 
 /**
@@ -65,5 +65,5 @@ export function ${businessName}Update(data: ${BusinessName}Form) {
  * @returns void
  */
 export function ${businessName}Remove(${pkColumn.javaField}: ID | IDS) {
-  return requestClient.deleteWithMsg<void>(`/${moduleName}/${businessName}/${${pkColumn.javaField}}`);
+  return alovaInstance.deleteWithMsg<void>(`/${moduleName}/${businessName}/${${pkColumn.javaField}}`);
 }
