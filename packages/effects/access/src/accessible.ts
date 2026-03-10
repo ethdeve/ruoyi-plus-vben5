@@ -29,7 +29,9 @@ async function generateAccessible(
   // 生成路由
   const accessibleRoutes = await generateRoutes(mode, options);
 
-  const root = router.getRoutes().find((item) => item.path === '/');
+  const root = router
+    .getRoutes()
+    .find((item) => item.name === 'Root' && item.path === '/');
 
   // 获取已有的路由名称列表
   const names = root?.children?.map((item) => item.name) ?? [];
