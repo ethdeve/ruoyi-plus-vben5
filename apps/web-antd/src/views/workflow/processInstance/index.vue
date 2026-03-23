@@ -161,6 +161,11 @@ function handleInfo(row: any) {
   flowInfoModalApi.setData({ businessId: row.businessId });
   flowInfoModalApi.open();
 }
+
+function handleCategorySelect(keys: string[]) {
+  selectedCode.value = keys;
+  tableApi.reload();
+}
 </script>
 
 <template>
@@ -170,7 +175,7 @@ function handleInfo(row: any) {
         v-model:select-code="selectedCode"
         class="w-[260px]"
         @reload="() => tableApi.reload()"
-        @select="() => tableApi.reload()"
+        @select="handleCategorySelect"
       />
       <BasicTable class="flex-1 overflow-hidden">
         <template #toolbar-actions>

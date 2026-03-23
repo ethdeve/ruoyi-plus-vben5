@@ -266,6 +266,11 @@ async function handleReload(type: 'add' | 'update') {
   }
   await tableApi.reload();
 }
+
+function handleCategorySelect(keys: string[]) {
+  selectedCode.value = keys;
+  tableApi.reload();
+}
 </script>
 
 <template>
@@ -275,7 +280,7 @@ async function handleReload(type: 'add' | 'update') {
         v-model:select-code="selectedCode"
         class="w-[260px]"
         @reload="() => tableApi.reload()"
-        @select="() => tableApi.reload()"
+        @select="handleCategorySelect"
       />
       <BasicTable class="flex-1 overflow-hidden">
         <template #toolbar-actions>
