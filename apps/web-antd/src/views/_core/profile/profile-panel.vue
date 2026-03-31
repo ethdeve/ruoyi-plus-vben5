@@ -49,12 +49,12 @@ const items = computed<DescriptionsProps['items']>(() => {
     },
     {
       content: (
-        <>
+        <div class="flex flex-wrap gap-1">
           <Tag color="processing">{profile.user.deptName ?? '未分配部门'}</Tag>
           {profile.postGroup && (
             <Tag color="processing">{profile.postGroup}</Tag>
           )}
-        </>
+        </div>
       ),
       label: '部门',
     },
