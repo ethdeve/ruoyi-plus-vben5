@@ -36,7 +36,7 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    checkedKeys: (number | string)[];
+    checkedKeys?: (number | string)[];
     defaultExpandAll?: boolean;
     menus: MenuOption[];
   }>(),
@@ -168,7 +168,9 @@ function setCheckedByKeys(
         if (keys.includes(permission.id)) {
           permission.checked = true;
           // 手动触发onChange来选中 节点独立情况不需要处理
-          triggerOnchange && handlePermissionChange(item);
+          if (triggerOnchange) {
+            handlePermissionChange(item);
+          }
         }
       });
     }
@@ -298,7 +300,9 @@ function getKeys(records: MenuPermissionOption[], addCurrent: boolean) {
       allKeys.push(...keys);
     } else {
       // 当前行的id
-      addCurrent && allKeys.push(item.id);
+      if (addCurrent) {
+        allKeys.push(item.id);
+      }
       // 当前行权限id 获取已经选中的
       if (item.permissions && item.permissions.length > 0) {
         const ids = item.permissions
@@ -360,7 +364,13 @@ defineExpose({
           option-type="button"
           @change="handleAssociationChange"
         />
-        <Alert class="mx-2" type="info">
+        <Alert
+          type="info"
+          :style="{
+            '--ant-alert-default-padding': '4px 8px',
+            marginLeft: '8px',
+          }"
+        >
           <template #message>
             <div>
               已选中
@@ -399,9 +409,3 @@ defineExpose({
     <FullScreenGuide />
   </div>
 </template>
-
-<style scoped>
-:deep(.ant-alert) {
-  padding: 4px 8px;
-}
-</style>

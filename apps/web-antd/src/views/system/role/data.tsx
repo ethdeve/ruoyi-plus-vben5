@@ -70,9 +70,7 @@ export const columns: VxeGridProps['columns'] = [
     field: 'dataScope',
     slots: {
       default: ({ row }) => {
-        const found = authScopeOptions.find(
-          (item) => item.value === row.dataScope,
-        );
+        const found = authScopeOptions.find((item) => item.value === row.dataScope);
         if (found) {
           return <Tag color={found.color}>{found.label}</Tag>;
         }
@@ -132,6 +130,9 @@ export const drawerSchema: FormSchemaGetter = () => [
     label: '角色排序',
     rules: 'required',
     defaultValue: 1,
+    componentProps: {
+      rootClass: 'flex-1',
+    },
   },
   {
     component: 'Select',

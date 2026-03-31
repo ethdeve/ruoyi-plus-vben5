@@ -1,19 +1,19 @@
 <script lang="ts" setup>
-import { h, ref } from "vue";
+import { h, ref } from 'vue';
 
-import { Page } from "@vben/common-ui";
+import { Page } from '@vben/common-ui';
 
-import { useDebounceFn } from "@vueuse/core";
-import { Button, Card, message, Spin, Tag } from "antdv-next";
-import dayjs from "dayjs";
+import { useDebounceFn } from '@vueuse/core';
+import { Button, Card, message, Spin, Tag } from 'antdv-next';
+import dayjs from 'dayjs';
 
-import { useVbenForm, z } from "#/adapter/form";
-import { getAllMenusApi } from "#/api";
+import { useVbenForm, z } from '#/adapter/form';
+import { getAllMenusApi } from '#/api';
 
-const keyword = ref("");
+const keyword = ref('');
 const fetching = ref(false);
 // 模拟远程获取数据
-function fetchRemoteOptions({ keyword = "选项" }: Record<string, any>) {
+function fetchRemoteOptions({ keyword = '选项' }: Record<string, any>) {
   fetching.value = true;
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -34,43 +34,43 @@ const [BaseForm, baseFormApi] = useVbenForm({
     colon: true,
     // 所有表单项
     componentProps: {
-      class: "w-full",
+      class: 'w-full',
     },
   },
-  fieldMappingTime: [["rangePicker", ["startTime", "endTime"], "YYYY-MM-DD"]],
+  fieldMappingTime: [['rangePicker', ['startTime', 'endTime'], 'YYYY-MM-DD']],
   // 提交函数
   handleSubmit: onSubmit,
   handleValuesChange(_values, fieldsChanged) {
-    message.info(`表单以下字段发生变化：${fieldsChanged.join("，")}`);
+    message.info(`表单以下字段发生变化：${fieldsChanged.join('，')}`);
   },
 
   // 垂直布局，label和input在不同行，值为vertical
   // 水平布局，label和input在同一行
-  layout: "horizontal",
+  layout: 'horizontal',
   schema: [
     {
       // 组件需要在 #/adapter.ts内注册，并加上类型
-      component: "Input",
+      component: 'Input',
       // 对应组件的参数
       componentProps: {
-        placeholder: "请输入用户名",
+        placeholder: '请输入用户名',
       },
       // 字段名
-      fieldName: "username",
+      fieldName: 'username',
       // 界面显示的label
-      label: "字符串",
-      rules: "required",
+      label: '字符串',
+      rules: 'required',
     },
     {
-      component: "Input",
-      fieldName: "desc",
+      component: 'Input',
+      fieldName: 'desc',
       // 界面显示的description
-      description: "这是表单描述",
-      label: "字符串(带描述)",
+      description: '这是表单描述',
+      label: '字符串(带描述)',
     },
     {
       // 组件需要在 #/adapter.ts内注册，并加上类型
-      component: "ApiSelect",
+      component: 'ApiSelect',
       // 对应组件的参数
       componentProps: {
         // 菜单接口转options格式
@@ -82,17 +82,17 @@ const [BaseForm, baseFormApi] = useVbenForm({
         },
         // 菜单接口
         api: getAllMenusApi,
-        autoSelect: "first",
+        autoSelect: 'first',
         allowClear: true,
       },
       // 字段名
-      fieldName: "api",
+      fieldName: 'api',
       // 界面显示的label
-      label: "ApiSelect",
-      rules: "selectRequired",
+      label: 'ApiSelect',
+      rules: 'selectRequired',
     },
     {
-      component: "ApiSelect",
+      component: 'ApiSelect',
       // 对应组件的参数
       componentProps: () => {
         return {
@@ -113,241 +113,244 @@ const [BaseForm, baseFormApi] = useVbenForm({
         };
       },
       // 字段名
-      fieldName: "remoteSearch",
+      fieldName: 'remoteSearch',
       // 界面显示的label
-      label: "远程搜索",
+      label: '远程搜索',
       renderComponentContent: () => {
         return {
           notFoundContent: fetching.value ? h(Spin) : undefined,
         };
       },
-      rules: "selectRequired",
+      rules: 'selectRequired',
     },
     {
-      component: "ApiTreeSelect",
+      component: 'ApiTreeSelect',
       // 对应组件的参数
       componentProps: {
         // 菜单接口
         api: getAllMenusApi,
         // 菜单接口转options格式
-        labelField: "name",
-        valueField: "path",
-        childrenField: "children",
+        labelField: 'name',
+        valueField: 'path',
+        childrenField: 'children',
       },
       // 字段名
-      fieldName: "apiTree",
+      fieldName: 'apiTree',
       // 界面显示的label
-      label: "ApiTreeSelect",
+      label: 'ApiTreeSelect',
     },
     {
-      component: "InputPassword",
+      component: 'InputPassword',
       componentProps: {
-        placeholder: "请输入密码",
+        placeholder: '请输入密码',
       },
-      fieldName: "password",
-      label: "密码",
+      fieldName: 'password',
+      label: '密码',
     },
     {
-      component: "InputNumber",
+      component: 'InputNumber',
       componentProps: {
-        placeholder: "请输入",
+        placeholder: '请输入',
       },
-      fieldName: "number",
-      label: "数字(带后缀)",
+      fieldName: 'number',
+      label: '数字(带后缀)',
     },
     {
-      component: "IconPicker",
-      fieldName: "icon",
-      label: "图标",
+      component: 'IconPicker',
+      fieldName: 'icon',
+      label: '图标',
     },
     {
       colon: false,
-      component: "Select",
+      component: 'Select',
       componentProps: {
         allowClear: true,
         filterOption: true,
         options: [
           {
-            label: "选项1",
-            value: "1",
+            label: '选项1',
+            value: '1',
           },
           {
-            label: "选项2",
-            value: "2",
+            label: '选项2',
+            value: '2',
           },
         ],
-        placeholder: "请选择",
+        placeholder: '请选择',
         showSearch: true,
       },
-      fieldName: "options",
-      label: () => h(Tag, { color: "warning" }, () => "😎自定义："),
+      fieldName: 'options',
+      label: () => h(Tag, { color: 'warning' }, () => '😎自定义：'),
     },
     {
-      component: "RadioGroup",
+      component: 'RadioGroup',
       componentProps: {
         options: [
           {
-            label: "选项1",
-            value: "1",
+            label: '选项1',
+            value: '1',
           },
           {
-            label: "选项2",
-            value: "2",
+            label: '选项2',
+            value: '2',
           },
         ],
       },
-      fieldName: "radioGroup",
-      label: "单选组",
+      fieldName: 'radioGroup',
+      label: '单选组',
     },
     {
-      component: "Radio",
-      fieldName: "radio",
-      label: "",
+      component: 'Radio',
+      fieldName: 'radio',
+      label: '',
       renderComponentContent: () => {
         return {
-          default: () => ["Radio"],
+          default: () => ['Radio'],
         };
       },
     },
     {
-      component: "CheckboxGroup",
+      component: 'CheckboxGroup',
       componentProps: {
-        name: "cname",
+        name: 'cname',
         options: [
           {
-            label: "选项1",
-            value: "1",
+            label: '选项1',
+            value: '1',
           },
           {
-            label: "选项2",
-            value: "2",
+            label: '选项2',
+            value: '2',
           },
         ],
       },
-      fieldName: "checkboxGroup",
-      label: "多选组",
+      fieldName: 'checkboxGroup',
+      label: '多选组',
     },
     {
-      component: "Checkbox",
-      fieldName: "checkbox",
-      label: "",
+      component: 'Checkbox',
+      fieldName: 'checkbox',
+      label: '',
       renderComponentContent: () => {
         return {
-          default: () => ["我已阅读并同意"],
+          default: () => ['我已阅读并同意'],
         };
       },
-      rules: z.boolean().refine((v) => v, { message: "为什么不同意？勾上它！" }),
+      rules: z
+        .boolean()
+        .refine((v) => v, { message: '为什么不同意？勾上它！' }),
     },
     {
-      component: "Mentions",
+      component: 'Mentions',
       componentProps: {
         options: [
           {
-            label: "afc163",
-            value: "afc163",
+            label: 'afc163',
+            value: 'afc163',
           },
           {
-            label: "zombieJ",
-            value: "zombieJ",
+            label: 'zombieJ',
+            value: 'zombieJ',
           },
         ],
-        placeholder: "请输入",
+        placeholder: '请输入',
       },
-      fieldName: "mentions",
-      label: "提及",
+      fieldName: 'mentions',
+      label: '提及',
     },
     {
-      component: "Rate",
-      fieldName: "rate",
-      label: "评分",
+      component: 'Rate',
+      fieldName: 'rate',
+      label: '评分',
     },
     {
-      component: "Switch",
+      component: 'Switch',
       componentProps: {
-        class: "w-auto",
+        class: 'w-auto',
       },
-      fieldName: "switch",
-      help: () => ["这是一个多行帮助信息", "第二行", "第三行"].map((v) => h("p", v)),
-      label: "开关",
+      fieldName: 'switch',
+      help: () =>
+        ['这是一个多行帮助信息', '第二行', '第三行'].map((v) => h('p', v)),
+      label: '开关',
     },
     {
-      component: "DatePicker",
-      fieldName: "datePicker",
-      label: "日期选择框",
-      rules: "selectRequired",
+      component: 'DatePicker',
+      fieldName: 'datePicker',
+      label: '日期选择框',
+      rules: 'selectRequired',
     },
     {
-      component: "RangePicker",
-      fieldName: "rangePicker",
-      label: "范围选择器",
-      rules: "selectRequired",
+      component: 'RangePicker',
+      fieldName: 'rangePicker',
+      label: '范围选择器',
+      rules: 'selectRequired',
     },
     {
-      component: "TimeRangePicker",
-      fieldName: "timeRangePicker",
-      label: "时间范围选择器",
-      rules: "selectRequired",
+      component: 'TimeRangePicker',
+      fieldName: 'timeRangePicker',
+      label: '时间范围选择器',
+      rules: 'selectRequired',
     },
     {
-      component: "TimePicker",
-      fieldName: "timePicker",
-      label: "时间选择框",
-      rules: "selectRequired",
+      component: 'TimePicker',
+      fieldName: 'timePicker',
+      label: '时间选择框',
+      rules: 'selectRequired',
     },
     {
-      rules: "selectRequired",
-      component: "TreeSelect",
+      rules: 'selectRequired',
+      component: 'TreeSelect',
       componentProps: {
         allowClear: true,
-        placeholder: "请选择",
+        placeholder: '请选择',
         showSearch: true,
         treeData: [
           {
-            label: "root 1",
-            value: "root 1",
+            label: 'root 1',
+            value: 'root 1',
             children: [
               {
-                label: "parent 1",
-                value: "parent 1",
+                label: 'parent 1',
+                value: 'parent 1',
                 children: [
                   {
-                    label: "parent 1-0",
-                    value: "parent 1-0",
+                    label: 'parent 1-0',
+                    value: 'parent 1-0',
                     children: [
                       {
-                        label: "my leaf",
-                        value: "leaf1",
+                        label: 'my leaf',
+                        value: 'leaf1',
                       },
                       {
-                        label: "your leaf",
-                        value: "leaf2",
+                        label: 'your leaf',
+                        value: 'leaf2',
                       },
                     ],
                   },
                   {
-                    label: "parent 1-1",
-                    value: "parent 1-1",
+                    label: 'parent 1-1',
+                    value: 'parent 1-1',
                   },
                 ],
               },
               {
-                label: "parent 2",
-                value: "parent 2",
+                label: 'parent 2',
+                value: 'parent 2',
               },
             ],
           },
         ],
-        treeNodeFilterProp: "label",
+        treeNodeFilterProp: 'label',
       },
-      fieldName: "treeSelect",
-      label: "树选择",
+      fieldName: 'treeSelect',
+      label: '树选择',
     },
   ].map((i) => ({
     ...i,
-    rules: "required",
+    rules: 'required',
   })),
   // 大屏一行显示3个，中屏一行显示2个，小屏一行显示1个
-  wrapperClass: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
 });
 
 function onSubmit() {}
@@ -357,31 +360,31 @@ function handleSetFormValue() {
    * 设置表单值(多个)
    */
   baseFormApi.setValues({
-    checkboxGroup: ["1"],
-    datePicker: dayjs("2022-01-01"),
+    checkboxGroup: ['1'],
+    datePicker: dayjs('2022-01-01'),
     files: [
       {
-        name: "example.png",
-        status: "done",
-        uid: "-1",
-        url: "https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp",
+        name: 'example.png',
+        status: 'done',
+        uid: '-1',
+        url: 'https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp',
       },
     ],
-    mentions: "@afc163",
+    mentions: '@afc163',
     number: 3,
-    options: "1",
-    password: "2",
-    radioGroup: "1",
-    rangePicker: [dayjs("2022-01-01"), dayjs("2022-01-02")],
+    options: '1',
+    password: '2',
+    radioGroup: '1',
+    rangePicker: [dayjs('2022-01-01'), dayjs('2022-01-02')],
     rate: 3,
     switch: true,
-    timePicker: dayjs("2022-01-01 12:00:00"),
-    treeSelect: "leaf1",
-    username: "1",
+    timePicker: dayjs('2022-01-01 12:00:00'),
+    treeSelect: 'leaf1',
+    username: '1',
   });
 
   // 设置单个表单值
-  baseFormApi.setFieldValue("checkbox", true);
+  baseFormApi.setFieldValue('checkbox', true);
 }
 </script>
 
@@ -397,9 +400,6 @@ function handleSetFormValue() {
           表单组件基础示例，请注意，该页面用到的参数代码会添加一些简单注释，方便理解，请仔细查看。
         </p>
       </div>
-    </template>
-    <template #extra>
-      <DocButton class="mb-2" path="/components/common-ui/vben-form" />
     </template>
     <Card title="基础示例">
       <template #extra>
