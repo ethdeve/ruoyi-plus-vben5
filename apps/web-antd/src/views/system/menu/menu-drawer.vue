@@ -211,3 +211,12 @@ const jsonEditorMode: any = 'text';
     </BasicForm>
   </BasicDrawer>
 </template>
+
+<style lang="scss">
+div.jse-main {
+  /* stylelint-disable-next-line selector-class-pattern */
+  .ͼ1 .cm-gutter-lint {
+    width: 0;
+  }
+}
+</style>
