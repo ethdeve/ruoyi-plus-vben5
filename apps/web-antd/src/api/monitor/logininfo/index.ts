@@ -6,11 +6,11 @@ import { commonExport } from '#/api/helper';
 import { alovaInstance } from '#/utils/http';
 
 enum Api {
-  loginInfoClean = '/monitor/logininfor/clean',
-  loginInfoExport = '/monitor/logininfor/export',
-  loginInfoList = '/monitor/logininfor/list',
-  root = '/monitor/logininfor',
-  userUnlock = '/monitor/logininfor/unlock',
+  loginInfoClean = '/monitor/loginInfo/clean',
+  loginInfoExport = '/monitor/loginInfo/export',
+  loginInfoList = '/monitor/loginInfo/list',
+  root = '/monitor/loginInfo',
+  userUnlock = '/monitor/loginInfo/unlock',
 }
 
 /**
