@@ -27,7 +27,6 @@ import {
   setPermissionsChecked,
   setTableChecked,
 } from './helper';
-import { useFullScreenGuide } from './hook';
 
 defineOptions({
   name: 'MenuSelectTable',
@@ -181,7 +180,6 @@ function setCheckedByKeys(
   });
 }
 
-const { FullScreenGuide, openGuide } = useFullScreenGuide();
 onMounted(() => {
   /**
    * 加载表格数据 转为指定结构
@@ -225,9 +223,6 @@ onMounted(() => {
       const records = tableApi.grid.getData();
       setCheckedByKeys(records, allCheckedKeys, association.value);
       updateCheckedNumber();
-
-      // 全屏引导
-      setTimeout(openGuide, 1000);
     },
   );
 });
@@ -405,7 +400,5 @@ defineExpose({
         </div>
       </template>
     </BasicTable>
-    <!-- 全屏引导 -->
-    <FullScreenGuide />
   </div>
 </template>
