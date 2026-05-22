@@ -1,12 +1,7 @@
 import type { Component, CSSProperties } from 'vue';
 
-import { ref } from 'vue';
-
-import { DEFAULT_TENANT_ID } from '@vben/constants';
 import { VbenIcon } from '@vben/icons';
 import { cn } from '@vben/utils';
-
-import { createGlobalState } from '@vueuse/core';
 
 import { authBinding } from '#/api/core/auth';
 
@@ -35,26 +30,12 @@ export interface BindItem extends ListItem {
 }
 
 /**
- * 这里存储登录页的tenantId 由于个人中心也会用到 需要共享
- * 所以使用`createGlobalState`
- * @see https://vueuse.org/shared/createGlobalState/
- */
-export const useLoginTenantId = createGlobalState(() => {
-  const loginTenantId = ref(DEFAULT_TENANT_ID);
-
-  return {
-    loginTenantId,
-  };
-});
-
-/**
  * 绑定授权
  * @param source
  */
 export async function handleAuthBinding(source: string) {
-  const { loginTenantId } = useLoginTenantId();
   // 这里返回打开授权页面的链接
-  const href = await authBinding(source, loginTenantId.value);
+  const href = await authBinding(source);
   window.location.href = href;
 }
 
@@ -65,19 +46,14 @@ export async function handleAuthBinding(source: string) {
 export const accountBindList: BindItem[] = [
   {
     avatar: (
-      <span
-        class={cn('icon-[simple-icons--gitee]', 'size-6')}
-        style={{ color: '#c71d23' }}
-      />
+      <span class={cn('icon-[simple-icons--gitee]', 'size-6')} style={{ color: '#c71d23' }} />
     ),
     description: '绑定Gitee账号',
     source: 'gitee',
     title: 'Gitee',
   },
   {
-    avatar: (
-      <span class={cn('icon-[fa--github-alt]', 'text-[#333]', 'size-6')} />
-    ),
+    avatar: <span class={cn('icon-[fa--github-alt]', 'text-[#333]', 'size-6')} />,
     description: '绑定Github账号',
     source: 'github',
     title: 'Github',
