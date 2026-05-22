@@ -104,7 +104,9 @@ const handleClear = () => {
                 </span>
                 <div class="flex flex-col gap-1 leading-none">
                   <p class="font-semibold">{{ item.title }}</p>
-                  <p class="my-1 line-clamp-2 text-xs text-muted-foreground">
+                  <p
+                    class="my-1 line-clamp-2 text-xs text-muted-foreground pr-8"
+                  >
                     {{ item.message }}
                   </p>
                   <p class="line-clamp-2 text-xs text-muted-foreground">
