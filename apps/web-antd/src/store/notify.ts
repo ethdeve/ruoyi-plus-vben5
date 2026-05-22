@@ -1,11 +1,13 @@
+// oxlint-disable no-unused-expressions
 import type { NotificationItem } from '@vben/layouts';
+
+import type { SSEMessage } from '#/api/common';
 
 import { computed, ref, watch } from 'vue';
 
 import { SvgMessageUrl } from '@vben/icons';
 import { $t } from '@vben/locales';
 import { useUserStore } from '@vben/stores';
-import { buildUUID } from '@vben/utils';
 
 import dayjs from 'dayjs';
 import { defineStore } from 'pinia';
@@ -48,12 +50,16 @@ export const useNotifyStore = defineStore(
       }
       const { data } = sseReturnData;
 
-      watch(data, (message) => {
-        if (!message) return;
-        console.log(`接收到消息: ${message}`);
+      watch(data, (strMessage) => {
+        if (!strMessage) {
+          return;
+        }
+        console.log(`接收到消息: ${strMessage}`);
+
+        const m = JSON.parse(strMessage) as SSEMessage;
 
         window.notification.success({
-          description: message,
+          description: m.message,
           duration: 3,
           title: $t('component.notice.received'),
         });
@@ -61,12 +67,12 @@ export const useNotifyStore = defineStore(
         notificationList.value.unshift({
           // avatar: `https://api.multiavatar.com/${random(0, 10_000)}.png`, 随机头像
           avatar: SvgMessageUrl,
-          date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+          date: dayjs(m.timestamp).format('YYYY-MM-DD HH:mm:ss'),
           isRead: false,
-          message,
+          message: m.message,
           title: $t('component.notice.title'),
           userId: userId.value,
-          id: buildUUID(),
+          id: m.messageId,
         });
 
         // 需要手动置空 vue3在值相同时不会触发watch

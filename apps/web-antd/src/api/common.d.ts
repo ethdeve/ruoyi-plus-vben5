@@ -40,3 +40,16 @@ export interface PageQuery {
   pageSize?: number;
   [key: string]: any;
 }
+
+/**
+ * SSE消息  通用响应
+ */
+export interface SSEMessage<T = any> {
+  data?: T;
+  message: string;
+  messageId: string;
+  path?: any;
+  source: 'backend';
+  timestamp: number;
+  type: 'message';
+}

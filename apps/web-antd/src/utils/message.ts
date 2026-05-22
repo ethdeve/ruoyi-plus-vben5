@@ -19,7 +19,7 @@ export function useSseMessage() {
   const accessStore = useAccessStore();
   const token = accessStore.accessToken;
 
-  const sseAddr = `${apiURL}/resource/sse?clientid=${clientId}&Authorization=Bearer ${token}`;
+  const sseAddr = `${apiURL}/resource/message?clientid=${clientId}&Authorization=Bearer ${token}`;
 
   const sseReturnData = useEventSource(sseAddr, [], {
     autoReconnect: {
