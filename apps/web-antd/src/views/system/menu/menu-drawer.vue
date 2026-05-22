@@ -199,7 +199,7 @@ const jsonEditorMode: any = 'text';
       <template #ext="slotProps">
         <div class="h-[200px] w-full">
           <JsonEditorVue
-            ref="queryParamJsonRef"
+            ref="extJsonRef"
             class="h-full"
             :mode="jsonEditorMode"
             :main-menu-bar="false"

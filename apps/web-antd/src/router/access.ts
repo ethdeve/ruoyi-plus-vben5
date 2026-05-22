@@ -121,14 +121,19 @@ function backMenuToVbenMenu(
       path: menu.path,
     };
 
-    // 处理meta映射
-    if (Object.keys(routeMetaMapping).includes(vbenRoute.path)) {
-      const routeMeta = routeMetaMapping[vbenRoute.path];
-      if (routeMeta) {
-        vbenRoute.meta = {
-          ...vbenRoute.meta,
-          ...(routeMeta as RouteMeta),
-        };
+    // 处理meta映射 TODO: 等待后端添加参数
+    if (menu.ext) {
+      try {
+        const extRouteMeta = JSON.parse(menu.ext);
+        if (extRouteMeta) {
+          vbenRoute.meta = {
+            // 放前面 防止预设参数被覆盖
+            ...(extRouteMeta as RouteMeta),
+            ...vbenRoute.meta,
+          };
+        }
+      } catch {
+        console.error('错误的路由Meta类型, 必须为[json]格式');
       }
     }
 
