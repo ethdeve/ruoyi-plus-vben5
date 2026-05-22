@@ -4,8 +4,32 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import { DictEnum } from '@vben/constants';
 import { getPopupContainer } from '@vben/utils';
 
+import { Tag, Tooltip } from 'antdv-next';
+
 import { getDictOptions } from '#/utils/dict';
 import { renderDict, renderDictTags } from '#/utils/render';
+
+function renderList(list: string[], allText: string) {
+  const accessPathList = (list as string[]) ?? [];
+  if (accessPathList.length === 0) {
+    return <Tag color="success">{allText}</Tag>;
+  }
+  return (
+    <Tooltip
+      title={
+        <div class="flex flex-col px-2">
+          {accessPathList.map((i) => (
+            <span key={i}>{i}</span>
+          ))}
+        </div>
+      }
+    >
+      <Tag color="processing">
+        {accessPathList[0]} {accessPathList.length > 1 ? '等' : ''}
+      </Tag>
+    </Tooltip>
+  );
+}
 
 export const querySchema: FormSchemaGetter = () => [
   {
@@ -76,6 +100,28 @@ export const columns: VxeGridProps['columns'] = [
     field: 'timeout',
     formatter({ row }) {
       return `${row.timeout}秒`;
+    },
+  },
+  {
+    title: '允许访问路径',
+    field: 'accessPath',
+    showOverflow: true,
+    slots: {
+      default: ({ row }) => {
+        const accessPathList = (row.accessPathList as string[]) ?? [];
+        return renderList(accessPathList, '全部路径');
+      },
+    },
+  },
+  {
+    title: 'IP白名单',
+    field: 'ipWhitelist',
+    showOverflow: true,
+    slots: {
+      default: ({ row }) => {
+        const ipWhitelist = (row.ipWhitelistList as string[]) ?? [];
+        return renderList(ipWhitelist, '全部IP');
+      },
     },
   },
   {
