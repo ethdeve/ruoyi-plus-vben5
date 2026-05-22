@@ -297,6 +297,22 @@ export const drawerSchema: FormSchemaGetter = () => [
     label: '组件路径',
   },
   {
+    component: 'Input',
+    componentProps: (model) => {
+      return {
+        disabled: /^https?:\/\//.test(model.path ?? ''),
+      };
+    },
+    defaultValue: '',
+    dependencies: {
+      show: (values) => values.menuType === 'C',
+      triggerFields: ['menuType', 'path'],
+    },
+    fieldName: 'activeMenu',
+    help: '适用于隐藏菜单, 用于打开隐藏菜单时 左侧激活的菜单 如: /system/oss-config/index',
+    label: '菜单激活',
+  },
+  {
     component: 'RadioGroup',
     componentProps: {
       buttonStyle: 'solid',
