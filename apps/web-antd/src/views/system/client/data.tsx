@@ -51,12 +51,7 @@ export const columns: VxeGridProps['columns'] = [
         if (!row.grantTypeList) {
           return '无';
         }
-        return renderDictTags(
-          row.grantTypeList,
-          getDictOptions(DictEnum.SYS_GRANT_TYPE),
-          true,
-          4,
-        );
+        return renderDictTags(row.grantTypeList, getDictOptions(DictEnum.SYS_GRANT_TYPE), true, 4);
       },
     },
   },
@@ -156,6 +151,26 @@ export const drawerSchema: FormSchemaGetter = () => [
     fieldName: 'deviceType',
     label: '设备类型',
     rules: 'selectRequired',
+  },
+  {
+    component: 'Textarea',
+    help: '多个路径可按换行、逗号或分号分隔；为空表示允许访问所有接口路径',
+    componentProps: {
+      placeholder: '/app/**',
+      rows: 4,
+    },
+    fieldName: 'accessPath',
+    label: '允许访问路径',
+  },
+  {
+    component: 'Textarea',
+    help: '支持精确IP、通配符和CIDR；多个规则可按换行、逗号或分号分隔；为空表示允许所有IP',
+    componentProps: {
+      placeholder: '127.0.0.1\n192.168.*.*\n10.0.0.0/24',
+      rows: 4,
+    },
+    fieldName: 'ipWhitelist',
+    label: 'IP白名单',
   },
   {
     component: 'InputNumber',
