@@ -23,27 +23,22 @@ const NotFoundComponent = () => import('#/views/_core/fallback/not-found.vue');
  */
 const routeMetaMapping: Record<string, Omit<RouteMeta, 'title'>> = {
   '/system/role-auth/user/:roleId': {
-    activePath: '/system/role',
     requireHomeRedirect: true,
   },
 
   '/system/oss-config/index': {
-    activePath: '/system/oss',
     requireHomeRedirect: true,
   },
 
   '/tool/gen-edit/index/:tableId': {
-    activePath: '/tool/gen',
     requireHomeRedirect: true,
   },
 
   '/workflow/design/index': {
-    activePath: '/workflow/processDefinition',
     requireHomeRedirect: true,
   },
 
   '/workflow/leaveEdit/index': {
-    activePath: '/demo/leave',
     requireHomeRedirect: true,
   },
 };
@@ -120,6 +115,7 @@ function backMenuToVbenMenu(
         icon: menu.meta?.icon,
         keepAlive: !menu.meta?.noCache,
         title: menu.meta?.title,
+        activePath: menu.meta?.activeMenu,
       },
       name: menu.name,
       path: menu.path,
@@ -140,7 +136,9 @@ function backMenuToVbenMenu(
     if (menu.query) {
       try {
         const query = JSON.parse(menu.query);
-        vbenRoute.meta && (vbenRoute.meta.query = query);
+        if (vbenRoute.meta) {
+          vbenRoute.meta.query = query;
+        }
       } catch {
         console.error('错误的路由参数类型, 必须为[json]格式');
       }

@@ -12,6 +12,8 @@ export interface MenuMeta {
   link?: string;
   noCache: boolean;
   title: string;
+  // 激活的路径
+  activeMenu?: string;
 }
 
 /**
