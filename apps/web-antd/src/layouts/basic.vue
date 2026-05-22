@@ -18,7 +18,6 @@ import { openWindow } from '@vben/utils';
 
 import { GithubOutlined, UserOutlined } from '@antdv-next/icons';
 
-import { TenantToggle } from '#/components/tenant-toggle';
 import { $t } from '#/locales';
 import { resetRoutes } from '#/router';
 import { useAuthStore, useNotifyStore } from '#/store';
@@ -152,9 +151,6 @@ useVersionUpdate();
 
 <template>
   <BasicLayout @clear-preferences-and-logout="handleLogout">
-    <template #header-right-1>
-      <TenantToggle />
-    </template>
     <template #user-dropdown>
       <UserDropdown
         :avatar
