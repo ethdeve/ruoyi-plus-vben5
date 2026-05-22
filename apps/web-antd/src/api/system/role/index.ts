@@ -164,3 +164,12 @@ export function roleSelectAll(roleId: ID, userIds: IDS) {
 export function roleDeptTree(roleId: ID) {
   return alovaInstance.get<DeptResp>(`${Api.roleDeptTree}/${roleId}`);
 }
+
+/**
+ * 设置角色权限 （单独接口）
+ * @param data dat a
+ * @returns void
+ */
+export function roleSetPermissions(data: any) {
+  return alovaInstance.putWithMsg<void>('/system/role/permission', data);
+}
