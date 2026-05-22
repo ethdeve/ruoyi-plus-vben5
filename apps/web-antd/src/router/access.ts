@@ -18,32 +18,6 @@ const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 const NotFoundComponent = () => import('#/views/_core/fallback/not-found.vue');
 
 /**
- * 后端返回的meta有时候不包括需要的信息 比如activePath等
- * 在这里定义映射
- */
-const routeMetaMapping: Record<string, Omit<RouteMeta, 'title'>> = {
-  '/system/role-auth/user/:roleId': {
-    requireHomeRedirect: true,
-  },
-
-  '/system/oss-config/index': {
-    requireHomeRedirect: true,
-  },
-
-  '/tool/gen-edit/index/:tableId': {
-    requireHomeRedirect: true,
-  },
-
-  '/workflow/design/index': {
-    requireHomeRedirect: true,
-  },
-
-  '/workflow/leaveEdit/index': {
-    requireHomeRedirect: true,
-  },
-};
-
-/**
  * 后台路由转vben路由
  * @param menuList 后台菜单
  * @param parentPath 上级目录

@@ -37,6 +37,8 @@ export interface Menu {
   path: string;
   query?: string;
   redirect?: string;
+  // 拓展字段
+  ext?: string;
 }
 
 /**
