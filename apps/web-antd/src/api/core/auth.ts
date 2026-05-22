@@ -103,7 +103,7 @@ export function seeConnectionClose() {
   if (!sseEnable) {
     return;
   }
-  return alovaInstance.get<void>('/resource/sse/close');
+  return alovaInstance.get<void>('/resource/message/close');
 }
 
 /**
