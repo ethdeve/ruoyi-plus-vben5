@@ -316,7 +316,7 @@ export const drawerSchema: FormSchemaGetter = () => [
     component: 'RadioGroup',
     componentProps: {
       buttonStyle: 'solid',
-      options: yesNoOptions,
+      options: getDictOptions(DictEnum.SYS_YES_NO),
       optionType: 'button',
     },
     defaultValue: '1',
@@ -389,12 +389,13 @@ export const drawerSchema: FormSchemaGetter = () => [
     fieldName: 'queryParam',
     help: 'vue-router中的query属性\n 如{"name": "xxx", "age": 16}',
     label: '路由参数',
+    formItemClass: 'items-baseline',
   },
   {
     component: 'RadioGroup',
     componentProps: {
       buttonStyle: 'solid',
-      options: yesNoOptions,
+      options: getDictOptions(DictEnum.SYS_YES_NO),
       optionType: 'button',
     },
     defaultValue: '0',
@@ -407,10 +408,17 @@ export const drawerSchema: FormSchemaGetter = () => [
     help: '路由的keepAlive属性',
     label: '是否缓存',
   },
+  // 使用ext存储前端路由meta
   {
     component: 'Input',
-    fieldName: 'remark',
-    label: '拓展字段',
+    dependencies: {
+      // 类型为菜单时显示
+      show: (values) => values.menuType === 'C',
+      triggerFields: ['menuType'],
+    },
+    fieldName: 'ext',
+    help: 'vben5支持的路由meta参数 json格式',
+    label: '路由meta',
     formItemClass: 'items-baseline',
   },
 ];

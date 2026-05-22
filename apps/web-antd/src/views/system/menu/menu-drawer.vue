@@ -10,7 +10,8 @@ import {
   listToTree,
 } from '@vben/utils';
 
-import { Input, Skeleton } from 'antdv-next';
+import { Skeleton } from 'antdv-next';
+import JsonEditorVue from 'json-editor-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import { menuAdd, menuInfo, menuList, menuUpdate } from '#/api/system/menu';
@@ -143,6 +144,17 @@ async function handleConfirm() {
     if (!valid) {
       return;
     }
+
+    // 有值 json校验失败
+    if (queryParamJsonRef.value?.[0]?.jsonEditor?.validate()) {
+      window.message.warning(`路由参数 json 校验失败`);
+      return;
+    }
+    if (extJsonRef.value?.[0]?.jsonEditor?.validate()) {
+      window.message.warning(`扩展路由Meta参数 json 校验失败`);
+      return;
+    }
+
     const data = cloneDeep(await formApi.getValues());
     await (isUpdate.value ? menuUpdate(data) : menuAdd(data));
     resetInitialized();
@@ -159,19 +171,41 @@ async function handleClosed() {
   await formApi.resetForm();
   resetInitialized();
 }
+
+type JsonEditorVueRef = { jsonEditor: { validate: () => object | undefined } };
+// 放在form中使用为数组 取index0
+const queryParamJsonRef = ref<JsonEditorVueRef[]>();
+const extJsonRef = ref<JsonEditorVueRef[]>();
+const jsonEditorMode: any = 'text';
 </script>
 
 <template>
   <BasicDrawer :title="title" class="w-[600px]">
     <Skeleton active v-if="loading" />
-    <BasicForm v-show="!loading">
-      <template #remark="slotProps">
-        <div class="flex flex-col gap-2">
-          <Input v-bind="slotProps" />
-          <span class="text-[14px] leading-[1.5] text-black/45">
-            在ele作为activePath使用 但是非json格式 v5无法使用
-            建议自行在apps/web-antd/src/router/access.ts更改
-          </span>
+    <BasicForm class="system-menu-form" v-show="!loading">
+      <template #queryParam="slotProps">
+        <div class="h-[200px] w-full">
+          <JsonEditorVue
+            ref="queryParamJsonRef"
+            class="h-full"
+            :mode="jsonEditorMode"
+            :main-menu-bar="false"
+            :status-bar="false"
+            v-bind="slotProps"
+          />
+        </div>
+      </template>
+
+      <template #ext="slotProps">
+        <div class="h-[200px] w-full">
+          <JsonEditorVue
+            ref="queryParamJsonRef"
+            class="h-full"
+            :mode="jsonEditorMode"
+            :main-menu-bar="false"
+            :status-bar="false"
+            v-bind="slotProps"
+          />
         </div>
       </template>
     </BasicForm>

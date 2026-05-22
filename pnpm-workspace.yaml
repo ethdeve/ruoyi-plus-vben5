@@ -145,6 +145,7 @@ catalog:
   html-minifier-terser: ^7.2.0
   is-ci: ^4.1.0
   json-bigint: ^1.0.0
+  json-editor-vue: ^0.18.1
   knip: ^6.14.1
   lefthook: ^2.1.4
   lodash-es: ^4.17.21
@@ -196,6 +197,7 @@ catalog:
   unplugin-dts: ^1.0.0-beta.6
   unplugin-vue: ^7.1.1
   unplugin-vue-components: ^0.27.3
+  vanilla-jsoneditor: ^3.12.0
   vditor: 3.10.9
   vee-validate: ^4.15.1
   version-polling: ^1.3.3
