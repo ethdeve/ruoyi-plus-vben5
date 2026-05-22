@@ -1,15 +1,11 @@
 import type { FormSchemaGetter } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 
-import { markRaw } from 'vue';
-
 import { DictEnum } from '@vben/constants';
 import { getPopupContainer } from '@vben/utils';
 
 import { Tag } from 'antdv-next';
 
-import { DefaultSlot } from '#/components/global/slot';
-import { TreeSelectPanel } from '#/components/tree';
 import { getDictOptions } from '#/utils/dict';
 
 /**
@@ -148,103 +144,28 @@ export const drawerSchema: FormSchemaGetter = () => [
     rules: 'required',
   },
   {
-    component: 'Radio',
-    dependencies: {
-      show: () => false,
-      triggerFields: [''],
-    },
-    fieldName: 'menuCheckStrictly',
-    label: '菜单权限',
-  },
-  {
-    component: 'Input',
-    defaultValue: [],
-    fieldName: 'menuIds',
-    label: '菜单权限',
-    formItemClass: 'col-span-2',
-  },
-  {
     component: 'Textarea',
     defaultValue: '',
     fieldName: 'remark',
     formItemClass: 'col-span-2',
     label: '备注',
   },
-];
-
-export const authModalSchemas: FormSchemaGetter = () => [
   {
     component: 'Input',
-    dependencies: {
-      show: () => false,
-      triggerFields: [''],
-    },
-    fieldName: 'roleId',
-    label: '角色ID',
-  },
-  {
-    component: 'Input',
-    componentProps: {
-      disabled: true,
-    },
-    fieldName: 'roleName',
-    label: '角色名称',
-  },
-  {
-    component: 'Input',
-    componentProps: {
-      disabled: true,
-    },
-    fieldName: 'roleKey',
-    label: '权限标识',
-  },
-  {
-    component: 'Select',
-    componentProps: {
-      allowClear: false,
-      getPopupContainer,
-      options: authScopeOptions,
-    },
-    fieldName: 'dataScope',
-    help: '更改后需要用户重新登录才能生效',
-    label: '权限范围',
-  },
-  {
-    component: 'Radio',
-    dependencies: {
-      show: () => false,
-      triggerFields: [''],
-    },
-    fieldName: 'deptCheckStrictly',
-    label: 'deptCheckStrictly',
-  },
-  {
-    // 这种的场景基本上是一个组件需要绑定两个或以上的场景
-    component: markRaw(DefaultSlot),
     defaultValue: [],
-    componentProps: {
-      rootDivAttrs: {
-        class: 'w-full',
-      },
-    },
+    fieldName: 'menuIds',
     dependencies: {
-      show: (values) => values.dataScope === '2',
-      triggerFields: ['dataScope'],
+      show: () => false,
+      triggerFields: [''],
     },
-    renderComponentContent: (model) => ({
-      default: (attrs: any) => {
-        return (
-          <TreeSelectPanel
-            expand-all-on-init={true}
-            treeData={attrs.treeData}
-            v-model:checkStrictly={model.deptCheckStrictly}
-            v-model:value={model.deptIds}
-          />
-        );
-      },
-    }),
+  },
+  {
+    component: 'Input',
+    defaultValue: [],
     fieldName: 'deptIds',
-    help: '更改后立即生效',
-    label: '部门权限',
+    dependencies: {
+      show: () => false,
+      triggerFields: [''],
+    },
   },
 ];
