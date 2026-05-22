@@ -8,7 +8,7 @@ export const DictEnum = {
   SYS_OPER_TYPE: 'sys_oper_type', // 操作类型
   SYS_OSS_ACCESS_POLICY: 'oss_access_policy', // oss权限桶类型
   SYS_SHOW_HIDE: 'sys_show_hide', // 显示状态
-  SYS_USER_SEX: 'sys_user_sex', // 性别
+  SYS_USER_GENDER: 'sys_user_gender', // 性别
   SYS_YES_NO: 'sys_yes_no', // 是否
   WF_BUSINESS_STATUS: 'wf_business_status', // 业务状态
   WF_FORM_TYPE: 'wf_form_type', // 表单类型

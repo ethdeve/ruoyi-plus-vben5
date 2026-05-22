@@ -154,7 +154,7 @@ export const drawerSchema: FormSchemaGetter = () => [
     component: 'RadioGroup',
     componentProps: {
       buttonStyle: 'solid',
-      options: getDictOptions(DictEnum.SYS_USER_SEX),
+      options: getDictOptions(DictEnum.SYS_USER_GENDER),
       optionType: 'button',
     },
     defaultValue: '0',
