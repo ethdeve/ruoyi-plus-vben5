@@ -8,7 +8,7 @@ import type { OssConfig } from '#/api/system/oss-config/model';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
-import { EnableStatus } from '@vben/constants';
+import { EnableStatus, YesNo } from '@vben/constants';
 
 import { Popconfirm, Space } from 'antdv-next';
 
@@ -140,7 +140,7 @@ async function handleChangeStatus(
       </template>
       <template #status="{ row }">
         <ApiSwitch
-          :value="row.status === EnableStatus.Enable"
+          :value="row.status === YesNo.Yes"
           :api="(checked) => handleChangeStatus(checked, row)"
           :disabled="!hasAccessByCodes(['system:ossConfig:edit'])"
           checked-text="是"

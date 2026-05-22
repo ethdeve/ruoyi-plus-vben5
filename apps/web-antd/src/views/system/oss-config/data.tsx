@@ -28,10 +28,7 @@ export const querySchema: FormSchemaGetter = () => [
   {
     component: 'Select',
     componentProps: {
-      options: [
-        { label: '是', value: '0' },
-        { label: '否', value: '1' },
-      ],
+      options: getDictOptions(DictEnum.SYS_YES_NO),
     },
     fieldName: 'status',
     label: '是否默认',
@@ -62,9 +59,7 @@ export const columns: VxeGridProps['columns'] = [
     field: 'accessPolicy',
     slots: {
       default: ({ row }) => {
-        const current = accessPolicyOptions.find(
-          (item) => item.value === row.accessPolicy,
-        );
+        const current = accessPolicyOptions.find((item) => item.value === row.accessPolicy);
         if (current) {
           return <Tag color={current.color}>{current.label}</Tag>;
         }
@@ -122,11 +117,9 @@ export const drawerSchema: FormSchemaGetter = () => [
     renderComponentContent: (formModel) => ({
       addonBefore: () => (formModel.isHttps === 'Y' ? 'https://' : 'http://'),
     }),
-    rules: z
-      .string()
-      .refine((domain) => domain && !/^https?:\/\/.*/.test(domain), {
-        message: '请输入正确的域名, 不需要http(s)',
-      }),
+    rules: z.string().refine((domain) => domain && !/^https?:\/\/.*/.test(domain), {
+      message: '请输入正确的域名, 不需要http(s)',
+    }),
   },
   {
     component: 'Input',
