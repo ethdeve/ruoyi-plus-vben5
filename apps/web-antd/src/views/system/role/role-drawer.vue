@@ -39,31 +39,17 @@ const [BasicForm, formApi] = useVbenForm({
 });
 
 const menuTree = ref<MenuOption[]>([]);
-async function setupMenuTree(id?: number | string) {
-  if (id) {
-    const resp = await roleMenuTreeSelect(id);
-    const menus = resp.menus;
-    // i18n处理
-    eachTree(menus, (node) => {
-      node.label = $t(node.label);
-    });
-    // 设置菜单信息
-    menuTree.value = resp.menus;
-    // keys依赖于menu 需要先加载menu
-    await nextTick();
-    await formApi.setFieldValue('menuIds', resp.checkedKeys);
-  } else {
-    const resp = await menuTreeSelect();
-    // i18n处理
-    eachTree(resp, (node) => {
-      node.label = $t(node.label);
-    });
-    // 设置菜单信息
-    menuTree.value = resp;
-    // keys依赖于menu 需要先加载menu
-    await nextTick();
-    await formApi.setFieldValue('menuIds', []);
-  }
+async function loadMenuTree(
+  menus: MenuOption[],
+  checkedKeys: (number | string)[],
+) {
+  eachTree(menus, (node) => {
+    node.label = $t(node.label);
+  });
+  menuTree.value = menus;
+  // keys依赖于menu 需要先加载menu
+  await nextTick();
+  await formApi.setFieldValue('menuIds', checkedKeys);
 }
 
 async function customFormValueGetter() {
@@ -96,11 +82,19 @@ const [BasicDrawer, drawerApi] = useVbenDrawer({
     isUpdate.value = !!id;
 
     if (isUpdate.value && id) {
-      const record = await roleInfo(id);
+      // 并行请求角色信息和菜单树
+      const [record, menuResp] = await Promise.all([
+        roleInfo(id),
+        roleMenuTreeSelect(id),
+      ]);
+      // 先设置表单值(menuCheckStrictly会影响菜单树的节点关联模式)
       await formApi.setValues(record);
+      // 再加载菜单树
+      await loadMenuTree(menuResp.menus, menuResp.checkedKeys);
+    } else {
+      const menus = await menuTreeSelect();
+      await loadMenuTree(menus, []);
     }
-    // init菜单 注意顺序要放在赋值record之后 内部watch会依赖record
-    await setupMenuTree(id);
     await markInitialized();
 
     drawerApi.drawerLoading(false);
