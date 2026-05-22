@@ -10,7 +10,7 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useAccess } from '@vben/access';
-import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 import {
   ADMIN_ROLE_KEY,
   EnableStatus,
@@ -32,7 +32,7 @@ import { useBlobExport } from '#/utils/file/export';
 
 import { columns, querySchema } from './data';
 import roleAuthModal from './role-auth-modal.vue';
-import roleDrawer from './role-drawer.vue';
+import roleModal from './role-modal.vue';
 
 const formOptions: VbenFormProps = {
   commonConfig: {
@@ -88,18 +88,18 @@ const [BasicTable, tableApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
 });
-const [RoleDrawer, drawerApi] = useVbenDrawer({
-  connectedComponent: roleDrawer,
+const [RoleModal, roleModalApi] = useVbenModal({
+  connectedComponent: roleModal,
 });
 
 function handleAdd() {
-  drawerApi.setData({});
-  drawerApi.open();
+  roleModalApi.setData({});
+  roleModalApi.open();
 }
 
 async function handleEdit(record: Role) {
-  drawerApi.setData({ id: record.roleId });
-  drawerApi.open();
+  roleModalApi.setData({ id: record.roleId });
+  roleModalApi.open();
 }
 
 async function handleDelete(row: Role) {
@@ -244,7 +244,7 @@ async function handleChangeStatus(checked: SwitchProps['checked'], row: Role) {
         </template>
       </template>
     </BasicTable>
-    <RoleDrawer @reload="tableApi.query()" />
+    <RoleModal @reload="tableApi.query()" />
     <RoleAuthModal @reload="tableApi.query()" />
   </Page>
 </template>

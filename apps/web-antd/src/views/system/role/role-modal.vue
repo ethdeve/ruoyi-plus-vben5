@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
-import { useVbenDrawer } from '@vben/common-ui';
+import { useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 import { cloneDeep } from '@vben/utils';
 
@@ -38,7 +38,8 @@ const { onBeforeClose, markInitialized, resetInitialized } = useBeforeCloseDiff(
   },
 );
 
-const [BasicDrawer, drawerApi] = useVbenDrawer({
+const [BasicModal, modalApi] = useVbenModal({
+  class: 'w-[550px]',
   onBeforeClose,
   onClosed: handleClosed,
   onConfirm: handleConfirm,
@@ -46,9 +47,9 @@ const [BasicDrawer, drawerApi] = useVbenDrawer({
     if (!isOpen) {
       return null;
     }
-    drawerApi.drawerLoading(true);
+    modalApi.modalLoading(true);
 
-    const { id } = drawerApi.getData() as { id?: number | string };
+    const { id } = modalApi.getData() as { id?: number | string };
     isUpdate.value = !!id;
 
     if (isUpdate.value && id) {
@@ -57,13 +58,13 @@ const [BasicDrawer, drawerApi] = useVbenDrawer({
     }
     await markInitialized();
 
-    drawerApi.drawerLoading(false);
+    modalApi.modalLoading(false);
   },
 });
 
 async function handleConfirm() {
   try {
-    drawerApi.lock(true);
+    modalApi.lock(true);
     const { valid } = await formApi.validate();
     if (!valid) {
       return;
@@ -72,11 +73,11 @@ async function handleConfirm() {
     await (isUpdate.value ? roleUpdate(data) : roleAdd(data));
     emit('reload');
     resetInitialized();
-    drawerApi.close();
+    modalApi.close();
   } catch (error) {
     console.error(error);
   } finally {
-    drawerApi.lock(false);
+    modalApi.lock(false);
   }
 }
 
@@ -87,7 +88,7 @@ async function handleClosed() {
 </script>
 
 <template>
-  <BasicDrawer :title="title" class="w-[550px]">
+  <BasicModal :title="title">
     <BasicForm />
-  </BasicDrawer>
+  </BasicModal>
 </template>
