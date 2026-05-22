@@ -324,6 +324,8 @@ export function findParentsIds(
 
 /**
  * 给出节点数组 找到所有父节点ID
+ * 优化: 一次遍历构建parentMap 再通过map回溯祖先链
+ * 复杂度从 O(n*m) 降为 O(m + n*d)  n=节点数 m=树大小 d=树深度
  * @param treeList 树形结构list
  * @param nodeIds 要寻找的节点ID list
  * @param config config
@@ -334,16 +336,39 @@ export function findGroupParentIds(
   nodeIds: number[],
   config: Partial<TreeHelperConfig> = {},
 ) {
-  // 用于存储所有父节点ID的Set 主要为了去重
-  const parentIds = new Set<number>();
+  const conf = getConfig(config) as TreeHelperConfig;
+  const { id, children } = conf;
 
-  nodeIds.forEach((nodeId) => {
-    findParentsIds(treeList, nodeId, config).forEach((parentId) => {
-      parentIds.add(parentId);
-    });
-  });
+  // 一次遍历构建 childId -> parentId 映射
+  const parentMap = new Map<number, number>();
+  function buildMap(nodes: any[]) {
+    for (const node of nodes) {
+      if (node[children]) {
+        for (const child of node[children]) {
+          parentMap.set(child[id], node[id]);
+        }
+        buildMap(node[children]);
+      }
+    }
+  }
+  buildMap(treeList);
 
-  return [...parentIds].sort();
+  // 通过map回溯每个节点的祖先链
+  const result = new Set<number>();
+  const nodeIdSet = new Set(nodeIds);
+  for (const nodeId of nodeIdSet) {
+    let current = nodeId;
+    while (parentMap.has(current)) {
+      const pid = parentMap.get(current)!;
+      if (result.has(pid)) {
+        break;
+      }
+      result.add(pid);
+      current = pid;
+    }
+  }
+
+  return [...result].sort();
 }
 
 /**
