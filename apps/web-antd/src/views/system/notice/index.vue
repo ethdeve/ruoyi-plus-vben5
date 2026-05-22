@@ -13,6 +13,7 @@ import { noticeList, noticeRemove } from '#/api/system/notice';
 
 import { columns, querySchema } from './data';
 import noticeModal from './notice-modal.vue';
+import noticePreviewModal from './notice-priview-modal.vue';
 
 const formOptions: VbenFormProps = {
   commonConfig: {
@@ -64,6 +65,10 @@ const [NoticeModal, modalApi] = useVbenModal({
   connectedComponent: noticeModal,
 });
 
+const [NoticePreviewModal, previewModalApi] = useVbenModal({
+  connectedComponent: noticePreviewModal,
+});
+
 function handleAdd() {
   modalApi.setData({});
   modalApi.open();
@@ -77,6 +82,10 @@ async function handleEdit(record: Notice) {
 async function handleDelete(row: Notice) {
   await noticeRemove([row.noticeId]);
   await tableApi.query();
+}
+
+function handlePreview(id: string) {
+  previewModalApi.setData({ id }).open();
 }
 
 function handleMultiDelete() {
@@ -119,6 +128,9 @@ function handleMultiDelete() {
       </template>
       <template #action="{ row }">
         <Space>
+          <action-button @click="handlePreview(row.noticeId)">
+            {{ $t('pages.common.preview') }}
+          </action-button>
           <action-button
             v-access:code="['system:notice:edit']"
             @click="handleEdit(row)"
@@ -142,5 +154,6 @@ function handleMultiDelete() {
       </template>
     </BasicTable>
     <NoticeModal @reload="tableApi.query()" />
+    <NoticePreviewModal />
   </Page>
 </template>

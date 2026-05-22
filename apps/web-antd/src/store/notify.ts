@@ -72,7 +72,9 @@ export const useNotifyStore = defineStore(
           message: m.message,
           title: $t('component.notice.title'),
           userId: userId.value,
+          type: m.type,
           id: m.messageId,
+          link: m.path,
         });
 
         // 需要手动置空 vue3在值相同时不会触发watch
@@ -97,11 +99,6 @@ export const useNotifyStore = defineStore(
      */
     function setRead(item: NotificationItem) {
       !item.isRead && (item.isRead = true);
-      // 显示信息
-      window.modal.info({
-        title: item.title,
-        content: item.message,
-      });
     }
 
     /**

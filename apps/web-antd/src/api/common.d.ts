@@ -48,8 +48,13 @@ export interface SSEMessage<T = any> {
   data?: T;
   message: string;
   messageId: string;
-  path?: any;
-  source: 'backend';
+  /** 跳转路径 */
+  path?: string;
+  source: 'backend' | 'notice' | 'workflow';
   timestamp: number;
-  type: 'message';
+  /**
+   * - message 普通消息
+   * - notice 通知公告
+   */
+  type: 'message' | 'notice';
 }

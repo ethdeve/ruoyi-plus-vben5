@@ -1,0 +1,81 @@
+import type { NotificationItem } from '@vben/layouts';
+
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { useNotifyStore } from '#/store/notify';
+
+export function useNotification() {
+  const notifyStore = useNotifyStore();
+  onMounted(() => notifyStore.startListeningMessage());
+
+  const notificationTabList = [
+    {
+      label: '消息',
+      value: 'message',
+    },
+    {
+      label: '通知',
+      value: 'notice',
+    },
+  ];
+  const currentTab = ref('message');
+
+  function handleViewAll() {
+    window.message.warning('暂未开放');
+  }
+
+  const router = useRouter();
+  function navigateTo(
+    link: string,
+    query?: Record<string, any>,
+    state?: Record<string, any>,
+  ) {
+    if (link.startsWith('http://') || link.startsWith('https://')) {
+      // 外部链接，在新标签页打开
+      window.open(link, '_blank');
+    } else {
+      // 内部路由链接，支持 query 参数和 state
+      router.push({
+        path: link,
+        query: query || {},
+        state,
+      });
+    }
+  }
+  function handleNotificationClick(item: NotificationItem) {
+    console.log(item.link);
+    // 如果通知项有链接，点击时跳转
+    if (item.link) {
+      // 解析路径和参数 支持带参跳转
+      const { path, params } = extractPathAndParams(item.link);
+      navigateTo(path, params);
+      return;
+    }
+  }
+
+  return {
+    notifyStore,
+    notificationTabList,
+    currentTab,
+    handleViewAll,
+    handleNotificationClick,
+  };
+}
+
+function extractPathAndParams(urlString: string) {
+  // 给相对路径加上虚拟 base，使其成为绝对 URL
+  const fakeBase = 'http://example.com';
+  const url = new URL(urlString, fakeBase);
+
+  // 提取路径部分
+  const path = url.pathname;
+
+  // 提取查询参数：URLSearchParams 对象，可以转换为普通对象
+  const params: Record<string, string> = {};
+  for (const [key, value] of url.searchParams.entries()) {
+    params[key] = value;
+  }
+
+  return { path, params };
+}

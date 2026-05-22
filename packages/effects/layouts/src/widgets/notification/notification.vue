@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { NotificationItem } from './types';
 
+import { computed } from 'vue';
+
 import { Bell, CircleCheckBig, CircleX, MailCheck } from '@vben/icons';
 import { $t } from '@vben/locales';
 
@@ -9,22 +11,29 @@ import {
   VbenIconButton,
   VbenPopover,
   VbenScrollbar,
+  VbenSegmented,
 } from '@vben-core/shadcn-ui';
 
 import { useToggle } from '@vueuse/core';
 
 defineOptions({ name: 'NotificationPopup' });
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     /** 显示圆点 */
     dot?: boolean;
     /** 消息列表 */
     notifications?: NotificationItem[];
+    /** 分段器 */
+    tabList?: {
+      label: string;
+      value: string;
+    }[];
   }>(),
   {
     dot: false,
     notifications: () => [],
+    tabList: () => [],
   },
 );
 
@@ -55,6 +64,14 @@ const handleMakeAll = () => {
 const handleClear = () => {
   emit('clear');
 };
+
+const currentTab = defineModel<string>('currentTab', { default: '' });
+const computedNotificationList = computed(() => {
+  if (props.tabList.length === 0) {
+    return props.notifications;
+  }
+  return props.notifications.filter((item) => item.type === currentTab.value);
+});
 </script>
 <template>
   <VbenPopover v-model:open="open" content-class="relative right-2 w-90 p-0">
@@ -81,9 +98,14 @@ const handleClear = () => {
           <MailCheck class="size-4" />
         </VbenIconButton>
       </div>
-      <VbenScrollbar v-if="notifications.length > 0">
+
+      <div v-if="tabList">
+        <VbenSegmented v-model="currentTab" :tabs="tabList" />
+      </div>
+
+      <VbenScrollbar v-if="computedNotificationList.length > 0">
         <ul class="!flex max-h-[360px] w-full flex-col">
-          <template v-for="item in notifications" :key="item.title">
+          <template v-for="item in computedNotificationList" :key="item.title">
             <li
               class="relative flex w-full cursor-pointer items-start gap-5 border-t border-border p-3 hover:bg-accent"
               @click="emit('click', item)"

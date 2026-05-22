@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, h, onMounted, watch } from 'vue';
+import { computed, h, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
@@ -20,9 +20,11 @@ import { GithubOutlined, UserOutlined } from '@antdv-next/icons';
 
 import { $t } from '#/locales';
 import { resetRoutes } from '#/router';
-import { useAuthStore, useNotifyStore } from '#/store';
+import { useAuthStore } from '#/store';
 import { useVersionUpdate } from '#/utils/check-update';
 import LoginForm from '#/views/_core/authentication/login.vue';
+
+import { useNotification } from './hooks/notification';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -92,12 +94,13 @@ async function handleLogout() {
   resetRoutes();
 }
 
-const notifyStore = useNotifyStore();
-onMounted(() => notifyStore.startListeningMessage());
-
-function handleViewAll() {
-  window.message.warning('暂未开放');
-}
+const {
+  notifyStore,
+  notificationTabList,
+  currentTab,
+  handleViewAll,
+  handleNotificationClick,
+} = useNotification();
 
 watch(
   () => ({
@@ -158,6 +161,9 @@ useVersionUpdate();
       <Notification
         :dot="notifyStore.showDot"
         :notifications="notifyStore.notifications"
+        :tab-list="notificationTabList"
+        v-model:current-tab="currentTab"
+        @click="handleNotificationClick"
         @clear="notifyStore.clearAllMessage"
         @make-all="notifyStore.setAllRead"
         @read="notifyStore.setRead"
