@@ -96,7 +96,7 @@ const allKeys = computed(() => {
 const handleCheckedAllChange: CheckboxEmits['change'] = (e) => {
   // 这个用于展示
   checkedKeys.value = e.target.checked ? allKeys.value : [];
-}
+};
 
 const expandedKeys = ref<string[]>([]);
 function handleExpandOrCollapseAll() {

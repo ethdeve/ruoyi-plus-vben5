@@ -12,10 +12,14 @@ import { alovaInstance } from '#/utils/http';
 const requestData = ref<any>({});
 const requestData2 = ref<any>({});
 async function apiRequest(name: string) {
-  const resp: any = await alovaInstance.post('/test/api/encrypt/request', name, {
-    encrypt: true,
-    isReturnNativeResponse: true,
-  });
+  const resp: any = await alovaInstance.post(
+    '/test/api/encrypt/request',
+    name,
+    {
+      encrypt: true,
+      isReturnNativeResponse: true,
+    },
+  );
   console.log(resp);
   requestData.value = resp.config.data;
   requestData2.value = resp.data;

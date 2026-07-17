@@ -1,6 +1,5 @@
 <!--抄送组件-->
 <script setup lang="ts">
-
 import type { User } from '#/api/system/user/model';
 
 import { computed } from 'vue';

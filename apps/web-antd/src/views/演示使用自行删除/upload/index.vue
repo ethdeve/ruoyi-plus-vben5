@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import type { UploadFile } from 'antdv-next';
 
 import type { CustomGetter } from '#/components/upload/src/props';

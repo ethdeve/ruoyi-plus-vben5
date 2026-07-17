@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, useTemplateRef, watch } from 'vue';
+import type { LanguageSupport } from './data';
+
+import { computed, nextTick, ref, watch } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
 import { usePreferences } from '@vben/preferences';
@@ -7,14 +9,14 @@ import { usePreferences } from '@vben/preferences';
 import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
 
-import { type LanguageSupport, languageSupportMap } from './data';
+import { languageSupportMap } from './data';
 
 const props = withDefaults(
   defineProps<{
     /**
      * 语言
      */
-    language: LanguageSupport;
+    language?: LanguageSupport;
     /**
      * 只读
      */
@@ -25,9 +27,6 @@ const props = withDefaults(
     readonly: false,
   },
 );
-
-const codeMirrorRef =
-  useTemplateRef<InstanceType<typeof CodeMirror>>('codeMirrorRef');
 
 const { isDark } = usePreferences();
 
@@ -52,7 +51,6 @@ const extensions = [oneDark];
   <CodeMirror
     v-if="langChanged"
     v-bind="$attrs"
-    ref="codeMirrorRef"
     v-model="modelValue"
     :dark="isDark"
     :extensions="extensions"
